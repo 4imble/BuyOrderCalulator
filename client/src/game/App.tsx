@@ -36,7 +36,7 @@ export default class App extends React.Component<any, IAppState> {
   }
 
   render() {
-    let tileElements = this.state.tiles.map(tile => <Tile data={tile} window={this.state.window}></Tile>)
+    let tileElements = this.state.tiles.map((tile, index) => <Tile key={index} data={tile} window={this.state.window}></Tile>)
 
     return (
       <div>
