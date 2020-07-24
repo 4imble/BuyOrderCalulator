@@ -2,6 +2,7 @@ import React from 'react';
 import TileElement from './TileElement';
 import { Tile, TileColor, ICoOrds } from './domain';
 import { Button } from 'antd';
+import * as signalR from "@microsoft/signalr";
 
 export interface IAppState {
   tiles: Array<Tile>;
@@ -30,6 +31,8 @@ export default class App extends React.Component<any, IAppState> {
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
+    const hubConnection = new signalR.HubConnectionBuilder().withUrl("http://localhost:5000/hub").build();
+
   }
 
   componentWillUnmount() {
