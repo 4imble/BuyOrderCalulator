@@ -54,13 +54,12 @@ namespace Swarm.Web.Server
                 app.UseDeveloperExceptionPage();
             }
             app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
 
-            //app.UseSpa(spa =>
-            //{
-            //    if (env.IsDevelopment())
-            //        spa.UseProxyToSpaDevelopmentServer("https://localhost:3000");
-            //});
+            app.UseSpa(spa =>
+            {
+                if (env.IsDevelopment())
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+            });
 
             container.Verify();
         }

@@ -1,27 +1,20 @@
 import React from 'react';
 import TileElement from './TileElement';
+import PlayerName from './PlayerName';
 import { Tile, TileColor, ICoOrds } from './domain';
-import { Button } from 'antd';
-import * as signalR from "@microsoft/signalr";
+// import * as signalR from "@microsoft/signalr";
 
-export interface IAppState {
+export interface IGameState {
   tiles: Array<Tile>;
   window: any;
   gameEdges: Array<Tile>;
 }
 
-export default class App extends React.Component<any, IAppState> {
+export default class Game extends React.Component<any, IGameState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      tiles: [
-        new Tile (0, 0, TileColor.Green),
-        new Tile (1, 1, TileColor.Orange),
-        new Tile (1, -1, TileColor.Green),
-        new Tile (0, -2, TileColor.Orange),
-        new Tile (1, 3, TileColor.Orange),
-        new Tile (1, 5, TileColor.Orange)
-      ],
+      tiles: [],
       window: { width: 0, height: 0 },
       gameEdges: []
     };
@@ -31,8 +24,8 @@ export default class App extends React.Component<any, IAppState> {
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
-    const hubConnection = new signalR.HubConnectionBuilder().withUrl("http://localhost:5000/hub").build();
-
+    this.calcEdges()
+    // const hubConnection = new signalR.HubConnectionBuilder().withUrl("http://localhost:5000/hub").build();
   }
 
   componentWillUnmount() {
@@ -40,7 +33,7 @@ export default class App extends React.Component<any, IAppState> {
   }
 
   updateWindowDimensions() {
-    this.setState({window: { width: window.innerWidth, height: window.innerHeight }});
+    this.setState({ window: { width: window.innerWidth, height: window.innerHeight } });
   }
 
   calcEdges() {
@@ -48,7 +41,11 @@ export default class App extends React.Component<any, IAppState> {
     this.state.tiles.forEach(tile => allEdges = allEdges.concat(tile.edges));
     let distinctEdges: Array<ICoOrds> = [...new Set(allEdges)];
     let unassignedDistinctEdges = distinctEdges.filter(edge => !this.state.tiles.some(tile => tile.x === edge.x && tile.y === edge.y));
-    this.setState({gameEdges: unassignedDistinctEdges.map(edge => new Tile(edge.x, edge.y, TileColor.Unassigned))});
+
+    if (!unassignedDistinctEdges.length)
+       unassignedDistinctEdges = [{ x: 0, y: 0 }];
+
+    this.setState({ gameEdges: unassignedDistinctEdges.map(edge => new Tile(edge.x, edge.y, TileColor.Unassigned)) });
   }
 
   render() {
@@ -57,9 +54,10 @@ export default class App extends React.Component<any, IAppState> {
 
     return (
       <div>
-        <Button type="primary" onClick={this.calcEdges.bind(this)}>Calculate Edges</Button>
         {tileElements}
         {tileEdges}
+        <PlayerName name={'Player 1'} color={'green'}></PlayerName>
+        <PlayerName name={'Player 2'} color={'orange'} isActive={true}></PlayerName>
       </div>
     )
   };

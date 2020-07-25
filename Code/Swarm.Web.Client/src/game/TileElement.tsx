@@ -17,7 +17,7 @@ export default class TileElement extends React.Component<ITileProps, any> {
   }
 
   get top(): number {
-    return (this.props.data.y * 44) + (this.props.window.height / 2) - 44;
+    return (this.props.data.y * 45) + (this.props.window.height / 2) - 45;
   }
 
   get color(): string {
