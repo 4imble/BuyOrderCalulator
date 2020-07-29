@@ -17,7 +17,9 @@
     "less-loader": "^6.2.0",
     "react": "^16.13.1",
     "react-app-rewired": "^2.1.6",
+    "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "typescript": "~3.7.2"
   },
@@ -43,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-router-dom": "^5.1.5",
     "babel-plugin-import": "^1.13.0",
     "typescript-plugin-css-modules": "^2.4.0"
   }
