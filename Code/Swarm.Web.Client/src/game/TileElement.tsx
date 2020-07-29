@@ -7,31 +7,25 @@ export interface ITileProps {
   window: any
 }
 
-export default class TileElement extends React.Component<ITileProps, any> {
-  constructor(public props: ITileProps) {
-    super(props);
+export default function TileElement(props: ITileProps) {
+  const left = (): number => {
+    return (props.data.x * 77) + (props.window.width / 2) - 50;
   }
 
-  get left(): number {
-    return (this.props.data.x * 77) + (this.props.window.width / 2) - 50;
+  const top = (): number => {
+    return (props.data.y * 45) + (props.window.height / 2) - 45;
   }
 
-  get top(): number {
-    return (this.props.data.y * 45) + (this.props.window.height / 2) - 45;
-  }
-
-  get color(): string {
-    if(this.props.data.color === TileColor.Unassigned)
+  const color = (): string => {
+    if (props.data.color === TileColor.Unassigned)
       return "unassigned";
-    return this.props.data.color ? "green" : "orange";
+    return props.data.color ? "green" : "orange";
   }
 
-  render() {
-    return (
-      <div className={'tile'} style={{ top: this.top, left: this.left }}>
-        <img alt="tile" className={this.color} src={require('../images/tile.png')}></img>
-        <div className="coords">[{this.props.data.x} / {this.props.data.y}]</div>
-      </div>
-    )
-  };
+  return (
+    <div className={'tile'} style={{ top: top(), left: left() }}>
+      <img alt="tile" className={color()} src={require('../images/tile.png')}></img>
+      <div className="coords">[{props.data.x} / {props.data.y}]</div>
+    </div>
+  )
 }
