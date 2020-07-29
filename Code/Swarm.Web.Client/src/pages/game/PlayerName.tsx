@@ -7,7 +7,7 @@ export default function PlayerName(props: any) {
         <div className="playerName">
             <span>
                 <Badge dot={props.isActive}>
-                    <img alt="tile" className={props.color} src={require('../images/tile.png')}></img>
+                    <img alt="tile" className={props.color} src={require('../../images/tile.png')}></img>
                 </Badge>
                 <span className="name">{props.name}</span>
             </span>

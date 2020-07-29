@@ -24,7 +24,7 @@ export default function TileElement(props: ITileProps) {
 
   return (
     <div className={'tile'} style={{ top: top(), left: left() }}>
-      <img alt="tile" className={color()} src={require('../images/tile.png')}></img>
+      <img alt="tile" className={color()} src={require('../../images/tile.png')}></img>
       <div className="coords">[{props.data.x} / {props.data.y}]</div>
     </div>
   )

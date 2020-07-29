@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, Route } from 'react-router-dom'
 import './index.css';
-import Game from './game/Game';
+import Game from './pages/game/Game';
+import Register from './pages/register/Register';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   //<React.StrictMode>
-  <Game />,
+  <BrowserRouter>
+      <Route exact path="/" component={Register} />
+      <Route path="/game" component={Game} />
+  </BrowserRouter>,
   //</React.StrictMode>,
   document.getElementById('root')
 );
