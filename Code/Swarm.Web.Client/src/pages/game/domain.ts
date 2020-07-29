@@ -6,6 +6,16 @@ export enum TileColor
     Unassigned
 }
 
+export class Game
+{
+    id: string;
+
+    constructor(id: string)
+    {
+        this.id = id;
+    }
+}
+
 export class Tile
 {
     constructor(x: number, y: number, color: TileColor) {

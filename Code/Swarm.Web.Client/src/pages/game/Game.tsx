@@ -4,7 +4,6 @@ import TileElement from './TileElement';
 import PlayerName from './PlayerName';
 import { Tile, TileColor, ICoOrds } from './domain';
 import { useCookies } from 'react-cookie';
-// import * as signalR from "@microsoft/signalr";
 
 export default function Game(props: any) {
   const history = useHistory();
