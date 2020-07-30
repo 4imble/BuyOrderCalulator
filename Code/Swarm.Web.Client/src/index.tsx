@@ -10,7 +10,7 @@ ReactDOM.render(
   //<React.StrictMode>
   <BrowserRouter>
       <Route exact path="/" component={Lobby} />
-      <Route path="/game" component={Game} />
+      <Route path="/game/:id" component={Game} />
   </BrowserRouter>,
   //</React.StrictMode>,
   document.getElementById('root')

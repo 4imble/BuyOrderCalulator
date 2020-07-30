@@ -4,6 +4,7 @@ import TileElement from './TileElement';
 import PlayerName from './PlayerName';
 import { Tile, TileColor, ICoOrds } from './domain';
 import { useCookies } from 'react-cookie';
+import './Game.less'
 
 export default function Game(props: any) {
   const history = useHistory();
@@ -50,6 +51,7 @@ export default function Game(props: any) {
       {tileEdges}
       <PlayerName name={'Player 1'} color={'green'}></PlayerName>
       <PlayerName name={'Player 2'} color={'orange'} isActive={true}></PlayerName>
+      <div className="gameId">{props.match.params.id}</div>
     </div>
   )
 }

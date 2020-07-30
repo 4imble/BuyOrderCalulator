@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import SetName from './SetName';
 import { useCookies } from 'react-cookie';
 import * as signalR from "@microsoft/signalr";
@@ -6,6 +7,7 @@ import { Game } from '../game/domain';
 import { Card, Button, Row, Col } from 'antd';
 
 export default function Lobby(props: any) {
+    const history = useHistory();
     const [cookie, setCookie, removeCookie] = useCookies(['swarm']);
     const [name, setName] = useState("");
     const [games, setGames] = useState<Array<Game>>([]);
@@ -39,7 +41,7 @@ export default function Lobby(props: any) {
         setGames(games => [...games, new Game(gameId)])
     }
 
-    let gameRows = games.map((game, index) => <div key={index} >{game.id}<hr /></div>)
+    let gameRows = games.map((game, index) => <div key={index} >{game.id} <Button onClick={() => history.push("/Game/"+game.id)} type="primary">View</Button><hr /></div>)
 
     return (
         <Row>
