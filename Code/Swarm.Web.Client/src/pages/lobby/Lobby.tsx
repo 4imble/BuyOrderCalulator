@@ -17,31 +17,36 @@ export default function Lobby(props: any) {
 
     useEffect(() => {
         const createHubConnection = async () => {
-            const hubConnect = new signalR.HubConnectionBuilder()
+            const hubConnection = new signalR.HubConnectionBuilder()
                 .withUrl('/gamehub')
                 .build();
             try {
-                await hubConnect.start()
+                await hubConnection.start()
                 console.log('Connection successful!')
             }
             catch (err) {
                 alert(err);
             }
-            setHubConnection(hubConnect);
-
-            await hubConnect.invoke("JoinLobby");
-
-            hubConnect.on("addGame", (gameId) => addGame(gameId));
+            setHubConnection(hubConnection);
+            hubConnection.on("addGame", (gameId) => addGame(gameId));
         }
 
         createHubConnection();
+        return () => {
+            hubConnection?.invoke("LeaveLobby");
+            hubConnection?.stop();
+        }
     }, []);
+
+    useEffect(() => {
+        hubConnection?.invoke("JoinLobby");
+    })
 
     const addGame = (gameId: string) => {
         setGames(games => [...games, new Game(gameId)])
     }
 
-    let gameRows = games.map((game, index) => <div key={index} >{game.id} <Button onClick={() => history.push("/Game/"+game.id)} type="primary">View</Button><hr /></div>)
+    let gameRows = games.map((game, index) => <div key={index} >{game.id} <Button onClick={() => history.push("/Game/" + game.id)} type="primary">View</Button><hr /></div>)
 
     return (
         <Row>
