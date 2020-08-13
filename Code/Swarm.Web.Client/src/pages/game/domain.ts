@@ -1,27 +1,30 @@
 
 export enum TileColor
 {
+    Unassigned,
     Green,
-    Orange,
-    Unassigned
+    Orange
 }
 
 export class Game
 {
-    id: string;
+    id: string  = "";
+    player1: Player = new Player();
+    player2: Player = new Player();
+    pieces: Array<Tile> = [];
+}
 
-    constructor(id: string)
-    {
-        this.id = id;
-    }
+export class Player
+{
+
 }
 
 export class Tile
 {
-    constructor(x: number, y: number, color: TileColor) {
+    constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
-        this.color = color;
+        this.color = TileColor.Unassigned;
     }
 
     x: number = 0;

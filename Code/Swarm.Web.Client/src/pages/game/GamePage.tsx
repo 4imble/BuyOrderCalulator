@@ -2,16 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import TileElement from './TileElement';
 import PlayerName from './PlayerName';
-import { Tile, TileColor, ICoOrds } from './domain';
+import { Tile, TileColor, ICoOrds, Game } from './domain';
 import { useCookies } from 'react-cookie';
-import './Game.less'
+import * as signalR from "@microsoft/signalr";
+import { plainToClass } from 'class-transformer';
+import './GamePage.less'
 
-export default function Game(props: any) {
+export default function GamePage(props: any) {
   const history = useHistory();
   const [cookie, setCookie, removeCookie] = useCookies(['swarm']);
-  const [tiles, setTiles] = useState<Array<Tile>>([new Tile(0, 0, TileColor.Green), new Tile(0, -2, TileColor.Orange), new Tile(1, -1, TileColor.Green)]);
+  const [tiles, setTiles] = useState<Array<Tile>>([]);
   const [windowProps, setWindowProps] = useState({ width: 0, height: 0 });
   const [gameEdges, setGameEdges] = useState<Array<Tile>>([]);
+  const [hubConnection, setHubConnection] = useState<signalR.HubConnection>();
 
   const calcEdges = () => {
     let allEdges: Array<ICoOrds> = [];
@@ -22,7 +25,39 @@ export default function Game(props: any) {
     if (!unassignedDistinctEdges.length)
       unassignedDistinctEdges = [{ x: 0, y: 0 }];
 
-    setGameEdges(unassignedDistinctEdges.map(edge => new Tile(edge.x, edge.y, TileColor.Unassigned)));
+    setGameEdges(unassignedDistinctEdges.map(edge => new Tile(edge.x, edge.y)));
+  }
+
+  useEffect(() => {
+    const createHubConnection = async () => {
+      const hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl('/gamehub')
+        .build();
+      try {
+        await hubConnection.start()
+        console.log('Connection successful!')
+      }
+      catch (err) {
+        alert(err);
+      }
+      setHubConnection(hubConnection);
+      hubConnection?.invoke("JoinGame", props.match.params.id);
+      hubConnection.on("joinGame", (game) => joinGame(game));
+    }
+
+    createHubConnection();
+    return () => {
+      hubConnection?.invoke("LeaveLobby");
+      hubConnection?.stop();
+    }
+  }, []);
+
+  const joinGame = (game: Game) => {
+    let piecesAsTiles = game.pieces.map(piece => {
+      return new Tile(piece.x, piece.y);
+    })
+
+    setTiles(piecesAsTiles);
   }
 
   useEffect(() => {
@@ -42,7 +77,7 @@ export default function Game(props: any) {
     setWindowProps({ width: window.innerWidth, height: window.innerHeight });
   }
 
-  let tileElements = tiles.map((tile, index) => <TileElement key={index} data={tile} window={windowProps}></TileElement>)
+  let tileElements = tiles.filter(tile => tile.x !== undefined && tile.y != undefined).map((tile, index) => <TileElement key={index} data={tile} window={windowProps}></TileElement>)
   let tileEdges = gameEdges.map((tile, index) => <TileElement key={index} data={tile} window={windowProps}></TileElement>)
 
   return (

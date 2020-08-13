@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Swarm.Domain;
 using Swarm.EntityFramework;
+using Swarm.Web.Server.Buillders;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Swarm.Web.Server
 {
-    public class GameHub: Hub
+    public class GameHub : Hub
     {
         private readonly DataContext dataContext;
 
@@ -32,6 +36,24 @@ namespace Swarm.Web.Server
             dataContext.SaveChanges();
 
             await Clients.Group("Lobby").SendAsync("addGame", newGame.Id);
+        }
+
+        public async Task JoinGame(Guid gameId)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, "Game_" + gameId.ToString());
+            var game = dataContext.Games
+                .Include(x => x.Player1)
+                .Include(x => x.Player2)
+                .Include(x => x.Pieces)
+                .Single(x => x.Id == gameId);
+
+            var gameModel = game.BuildForView();
+            await Clients.Group("Game_" + gameId.ToString()).SendAsync("joinGame", game);
+        }
+
+        public async Task LeaveGame(Guid gameId)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, "Game_" + gameId.ToString());
         }
 
         private static Game GenerateNewGame()

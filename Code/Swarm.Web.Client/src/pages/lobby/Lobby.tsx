@@ -43,7 +43,10 @@ export default function Lobby(props: any) {
     })
 
     const addGame = (gameId: string) => {
-        setGames(games => [...games, new Game(gameId)])
+        let newGame = new Game();
+        newGame.id = gameId;
+
+        setGames(games => [...games, newGame]);
     }
 
     let gameRows = games.map((game, index) => <div key={index} >{game.id} <Button onClick={() => history.push("/Game/" + game.id)} type="primary">View</Button><hr /></div>)
