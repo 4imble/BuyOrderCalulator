@@ -2,15 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom'
 import './index.css';
-import Game from './pages/game/Game';
-import Register from './pages/register/Register';
+import GamePage from './pages/game/GamePage';
+import Lobby from './pages/lobby/Lobby';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   //<React.StrictMode>
   <BrowserRouter>
-      <Route exact path="/" component={Register} />
-      <Route path="/game" component={Game} />
+      <Route exact path="/" component={Lobby} />
+      <Route path="/game/:id" component={GamePage} />
   </BrowserRouter>,
   //</React.StrictMode>,
   document.getElementById('root')

@@ -34,6 +34,7 @@ namespace Swarm.EntityFramework
         }
 
         public DbSet<Game> Games { get; set; }
+        public DbSet<Player> Players { get; set; }
 
     }
 }
