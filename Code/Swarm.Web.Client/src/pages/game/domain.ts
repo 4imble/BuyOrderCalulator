@@ -16,7 +16,9 @@ export class Game
 
 export class Player
 {
-
+    id: string = "";
+    colour: TileColor = TileColor.Unassigned;
+    name: string = "";
 }
 
 export class Tile

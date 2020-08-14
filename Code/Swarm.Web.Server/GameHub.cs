@@ -33,7 +33,7 @@ namespace Swarm.Web.Server
         {
             var newGame = GenerateNewGame();
             dataContext.Games.Add(newGame);
-            dataContext.SaveChanges();
+            await dataContext.SaveChangesAsync();
 
             await Clients.Group("Lobby").SendAsync("addGame", newGame.Id);
         }
@@ -48,12 +48,21 @@ namespace Swarm.Web.Server
                 .Single(x => x.Id == gameId);
 
             var gameModel = game.BuildForView();
-            await Clients.Group("Game_" + gameId.ToString()).SendAsync("joinGame", game);
+            await Clients.Group("Game_" + gameId.ToString()).SendAsync("joinGame", gameModel);
         }
 
         public async Task LeaveGame(Guid gameId)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, "Game_" + gameId.ToString());
+        }
+
+        public async Task ClaimPlayer(Guid gameId, Guid playerId, Guid clientPlayerId, string playerName)
+        {
+            var player = dataContext.Players.Single(x => x.Id == playerId);
+            player.ClientGuid = clientPlayerId;
+            player.Name = playerName;
+
+            await dataContext.SaveChangesAsync();
         }
 
         private static Game GenerateNewGame()

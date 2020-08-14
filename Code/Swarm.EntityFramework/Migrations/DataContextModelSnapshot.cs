@@ -79,9 +79,12 @@ namespace Swarm.EntityFramework.Migrations
                     b.Property<int>("Colour")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Player");
+                    b.ToTable("Players");
                 });
 
             modelBuilder.Entity("Swarm.Domain.Game", b =>

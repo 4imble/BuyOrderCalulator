@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import TileElement from './TileElement';
-import PlayerName from './PlayerName';
-import { Tile, TileColor, ICoOrds, Game } from './domain';
+import GamePlayer from './GamePlayer';
+import { Tile, ICoOrds, Game, Player } from './domain';
 import { useCookies } from 'react-cookie';
 import * as signalR from "@microsoft/signalr";
 import { plainToClass } from 'class-transformer';
@@ -12,6 +12,7 @@ export default function GamePage(props: any) {
   const history = useHistory();
   const [cookie, setCookie, removeCookie] = useCookies(['swarm']);
   const [tiles, setTiles] = useState<Array<Tile>>([]);
+  const [players, setPlayers] = useState<Array<Player>>([new Player(), new Player()]);
   const [windowProps, setWindowProps] = useState({ width: 0, height: 0 });
   const [gameEdges, setGameEdges] = useState<Array<Tile>>([]);
   const [hubConnection, setHubConnection] = useState<signalR.HubConnection>();
@@ -57,7 +58,11 @@ export default function GamePage(props: any) {
       return new Tile(piece.x, piece.y);
     })
 
+    let player1 = plainToClass(Player, game.player1);
+    let player2 = plainToClass(Player, game.player2);
+
     setTiles(piecesAsTiles);
+    setPlayers([player1, player2]);
   }
 
   useEffect(() => {
@@ -77,6 +82,11 @@ export default function GamePage(props: any) {
     setWindowProps({ width: window.innerWidth, height: window.innerHeight });
   }
 
+  const takeSeat = async (playerId: string) => {
+    await hubConnection?.invoke("ClaimPlayer", props.match.params.id, playerId, cookie.swarm.id, cookie.swarm.name);
+    await hubConnection?.invoke("JoinGame", props.match.params.id);
+  }
+
   let tileElements = tiles.filter(tile => tile.x !== undefined && tile.y != undefined).map((tile, index) => <TileElement key={index} data={tile} window={windowProps}></TileElement>)
   let tileEdges = gameEdges.map((tile, index) => <TileElement key={index} data={tile} window={windowProps}></TileElement>)
 
@@ -84,8 +94,9 @@ export default function GamePage(props: any) {
     <div>
       {tileElements}
       {tileEdges}
-      <PlayerName name={'Player 1'} color={'green'}></PlayerName>
-      <PlayerName name={'Player 2'} color={'orange'} isActive={true}></PlayerName>
+
+      <GamePlayer takeSeat={takeSeat} player={players[0]}></GamePlayer>
+      <GamePlayer takeSeat={takeSeat} player={players[1]} color={'orange'} isActive={true}></GamePlayer>
       <div className="gameId">{props.match.params.id}</div>
     </div>
   )

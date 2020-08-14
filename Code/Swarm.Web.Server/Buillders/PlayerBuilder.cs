@@ -8,7 +8,9 @@ namespace Swarm.Web.Server.Buillders
         {
             return new PlayerModel
             {
-                Id = player.Id
+                Id = player.Id,
+                Colour = player.Colour,
+                Name = player.Name
             };
         }
     }

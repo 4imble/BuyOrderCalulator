@@ -9,7 +9,7 @@ using Swarm.EntityFramework;
 namespace Swarm.EntityFramework.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200805202718_initial")]
+    [Migration("20200814063130_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,9 +81,12 @@ namespace Swarm.EntityFramework.Migrations
                     b.Property<int>("Colour")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Player");
+                    b.ToTable("Players");
                 });
 
             modelBuilder.Entity("Swarm.Domain.Game", b =>

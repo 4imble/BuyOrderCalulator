@@ -8,16 +8,17 @@ namespace Swarm.EntityFramework.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Player",
+                name: "Players",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     ClientGuid = table.Column<Guid>(nullable: false),
-                    Colour = table.Column<int>(nullable: false)
+                    Colour = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Player", x => x.Id);
+                    table.PrimaryKey("PK_Players", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -32,15 +33,15 @@ namespace Swarm.EntityFramework.Migrations
                 {
                     table.PrimaryKey("PK_Games", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Games_Player_Player1Id",
+                        name: "FK_Games_Players_Player1Id",
                         column: x => x.Player1Id,
-                        principalTable: "Player",
+                        principalTable: "Players",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Games_Player_Player2Id",
+                        name: "FK_Games_Players_Player2Id",
                         column: x => x.Player2Id,
-                        principalTable: "Player",
+                        principalTable: "Players",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -66,9 +67,9 @@ namespace Swarm.EntityFramework.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Piece_Player_PlayerId",
+                        name: "FK_Piece_Players_PlayerId",
                         column: x => x.PlayerId,
-                        principalTable: "Player",
+                        principalTable: "Players",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -103,7 +104,7 @@ namespace Swarm.EntityFramework.Migrations
                 name: "Games");
 
             migrationBuilder.DropTable(
-                name: "Player");
+                name: "Players");
         }
     }
 }

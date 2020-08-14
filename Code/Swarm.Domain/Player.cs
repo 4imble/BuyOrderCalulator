@@ -6,5 +6,6 @@ namespace Swarm.Domain
     {
         public Guid ClientGuid { get; set; }
         public PlayerColour Colour { get; set; }
+        public string Name { get; set; }
     }
 }
