@@ -1,3 +1,3 @@
-cd ..\Code\Swarm.Web.Client
+cd ..\Code\BuyOrderCalulator.Web.Client
 call yarn
 call yarn start
