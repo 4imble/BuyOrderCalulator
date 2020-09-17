@@ -12,10 +12,11 @@ namespace BuyOrderCalc.Web.Server.Buillders
                 Quantity = item.Quantity,
                 ReorderCreditValue = item.ReorderCreditValue,
                 ReorderLevel = item.ReorderLevel,
-                TakingOrders = item.TakingOrders,
                 UnitPrice = item.UnitPrice,
                 TypeId = item.TypeId,
-                TypeName = item.Type.Name
+                TypeName = item.Type.Name,
+                SupplyTypeId = item.SupplyType.Id,
+                SupplyTypeName = item.SupplyType.Name
             };
         }
     }

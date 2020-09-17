@@ -8,10 +8,11 @@ namespace BuyOrderCalc.Domain
         public int Quantity { get; set; }
         public int ReorderLevel { get; set; }
         public int ReorderCreditValue { get; set; }
-        public bool TakingOrders { get; set; }
 
         public int TypeId { get; set; }
         public ItemType Type { get; set; }
 
+        public int SupplyTypeId { get; set; }
+        public SupplyType SupplyType { get; set; }
     }
 }

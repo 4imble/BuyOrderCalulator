@@ -37,7 +37,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                     b.Property<int>("ReorderLevel")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("TakingOrders")
+                    b.Property<int>("SupplyTypeId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("TypeId")
@@ -47,6 +47,8 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SupplyTypeId");
 
                     b.HasIndex("TypeId");
 
@@ -61,7 +63,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                             Quantity = 17450000,
                             ReorderCreditValue = 1,
                             ReorderLevel = 18742950,
-                            TakingOrders = true,
+                            SupplyTypeId = 1,
                             TypeId = 1,
                             UnitPrice = 2
                         },
@@ -73,7 +75,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                             Quantity = 6950000,
                             ReorderCreditValue = 1,
                             ReorderLevel = 5312610,
-                            TakingOrders = true,
+                            SupplyTypeId = 2,
                             TypeId = 1,
                             UnitPrice = 18
                         },
@@ -85,7 +87,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                             Quantity = 2290000,
                             ReorderCreditValue = 1,
                             ReorderLevel = 1665210,
-                            TakingOrders = true,
+                            SupplyTypeId = 3,
                             TypeId = 1,
                             UnitPrice = 32
                         },
@@ -97,7 +99,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                             Quantity = 170000,
                             ReorderCreditValue = 1,
                             ReorderLevel = 284720,
-                            TakingOrders = true,
+                            SupplyTypeId = 3,
                             TypeId = 1,
                             UnitPrice = 110
                         },
@@ -109,9 +111,21 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                             Quantity = 130000,
                             ReorderCreditValue = 1,
                             ReorderLevel = 67810,
-                            TakingOrders = true,
+                            SupplyTypeId = 2,
                             TypeId = 1,
                             UnitPrice = 1000
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Name = "Zydrine",
+                            Quantity = 5413,
+                            ReorderCreditValue = 1,
+                            ReorderLevel = 0,
+                            SupplyTypeId = 4,
+                            TypeId = 1,
+                            UnitPrice = 225
                         });
                 });
 
@@ -158,8 +172,64 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         });
                 });
 
+            modelBuilder.Entity("BuyOrderCalc.Domain.SupplyType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PriceModifier")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SupplyType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Name = "High",
+                            PriceModifier = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Name = "Low",
+                            PriceModifier = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Name = "Emergency",
+                            PriceModifier = 0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Name = "Unwanted",
+                            PriceModifier = 0
+                        });
+                });
+
             modelBuilder.Entity("BuyOrderCalc.Domain.Item", b =>
                 {
+                    b.HasOne("BuyOrderCalc.Domain.SupplyType", "SupplyType")
+                        .WithMany()
+                        .HasForeignKey("SupplyTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BuyOrderCalc.Domain.ItemType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId")

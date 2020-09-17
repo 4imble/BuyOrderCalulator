@@ -22,7 +22,10 @@ namespace BuyOrderCalc.Web.Server
         [HttpGet]
         public List<ItemModel> Get()
         {
-            var items = dataContext.Items.Include(x => x.Type);
+            var items = dataContext.Items
+                .Include(x => x.Type)
+                .Include(x => x.SupplyType);
+
             return items.Select(x => x.BuildForView()).ToList();
         }
     }
