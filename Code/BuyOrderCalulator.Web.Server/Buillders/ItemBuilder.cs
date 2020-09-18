@@ -8,9 +8,10 @@ namespace BuyOrderCalc.Web.Server.Buillders
         {
             return new ItemModel
             {
+                Id = item.Id,
                 Name = item.Name,
                 Quantity = item.Quantity,
-                ReorderCreditValue = item.ReorderCreditValue,
+                CorpCreditMultiplier = item.CorpCreditMultiplier,
                 ReorderLevel = item.ReorderLevel,
                 UnitPrice = item.UnitPrice,
                 TypeId = item.TypeId,

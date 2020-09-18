@@ -7,7 +7,7 @@ namespace BuyOrderCalc.Domain
         public int UnitPrice { get; set; }
         public int Quantity { get; set; }
         public int ReorderLevel { get; set; }
-        public int ReorderCreditValue { get; set; }
+        public int CorpCreditMultiplier { get; set; }
 
         public int TypeId { get; set; }
         public ItemType Type { get; set; }

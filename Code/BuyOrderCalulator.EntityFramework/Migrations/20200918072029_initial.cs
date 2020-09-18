@@ -47,7 +47,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                     UnitPrice = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
                     ReorderLevel = table.Column<int>(nullable: false),
-                    ReorderCreditValue = table.Column<int>(nullable: false),
+                    CorpCreditMultiplier = table.Column<int>(nullable: false),
                     TypeId = table.Column<int>(nullable: false),
                     SupplyTypeId = table.Column<int>(nullable: false)
                 },
@@ -110,33 +110,33 @@ namespace BuyOrderCalc.EntityFramework.Migrations
 
             migrationBuilder.InsertData(
                 table: "Items",
-                columns: new[] { "Id", "Guid", "Name", "Quantity", "ReorderCreditValue", "ReorderLevel", "SupplyTypeId", "TypeId", "UnitPrice" },
-                values: new object[] { 1, new Guid("00000000-0000-0000-0000-000000000000"), "Tritanium", 17450000, 1, 18742950, 1, 1, 2 });
+                columns: new[] { "Id", "CorpCreditMultiplier", "Guid", "Name", "Quantity", "ReorderLevel", "SupplyTypeId", "TypeId", "UnitPrice" },
+                values: new object[] { 1, 1, new Guid("00000000-0000-0000-0000-000000000000"), "Tritanium", 17450000, 18742950, 1, 1, 2 });
 
             migrationBuilder.InsertData(
                 table: "Items",
-                columns: new[] { "Id", "Guid", "Name", "Quantity", "ReorderCreditValue", "ReorderLevel", "SupplyTypeId", "TypeId", "UnitPrice" },
-                values: new object[] { 2, new Guid("00000000-0000-0000-0000-000000000000"), "Pyerite", 6950000, 1, 5312610, 2, 1, 18 });
+                columns: new[] { "Id", "CorpCreditMultiplier", "Guid", "Name", "Quantity", "ReorderLevel", "SupplyTypeId", "TypeId", "UnitPrice" },
+                values: new object[] { 2, 1, new Guid("00000000-0000-0000-0000-000000000000"), "Pyerite", 6950000, 5312610, 2, 1, 18 });
 
             migrationBuilder.InsertData(
                 table: "Items",
-                columns: new[] { "Id", "Guid", "Name", "Quantity", "ReorderCreditValue", "ReorderLevel", "SupplyTypeId", "TypeId", "UnitPrice" },
-                values: new object[] { 5, new Guid("00000000-0000-0000-0000-000000000000"), "Nocxium", 130000, 1, 67810, 2, 1, 1000 });
+                columns: new[] { "Id", "CorpCreditMultiplier", "Guid", "Name", "Quantity", "ReorderLevel", "SupplyTypeId", "TypeId", "UnitPrice" },
+                values: new object[] { 5, 1, new Guid("00000000-0000-0000-0000-000000000000"), "Nocxium", 130000, 67810, 2, 1, 1000 });
 
             migrationBuilder.InsertData(
                 table: "Items",
-                columns: new[] { "Id", "Guid", "Name", "Quantity", "ReorderCreditValue", "ReorderLevel", "SupplyTypeId", "TypeId", "UnitPrice" },
-                values: new object[] { 3, new Guid("00000000-0000-0000-0000-000000000000"), "Mexallon", 2290000, 1, 1665210, 3, 1, 32 });
+                columns: new[] { "Id", "CorpCreditMultiplier", "Guid", "Name", "Quantity", "ReorderLevel", "SupplyTypeId", "TypeId", "UnitPrice" },
+                values: new object[] { 3, 1, new Guid("00000000-0000-0000-0000-000000000000"), "Mexallon", 2290000, 1665210, 3, 1, 32 });
 
             migrationBuilder.InsertData(
                 table: "Items",
-                columns: new[] { "Id", "Guid", "Name", "Quantity", "ReorderCreditValue", "ReorderLevel", "SupplyTypeId", "TypeId", "UnitPrice" },
-                values: new object[] { 4, new Guid("00000000-0000-0000-0000-000000000000"), "Isogen", 170000, 1, 284720, 3, 1, 110 });
+                columns: new[] { "Id", "CorpCreditMultiplier", "Guid", "Name", "Quantity", "ReorderLevel", "SupplyTypeId", "TypeId", "UnitPrice" },
+                values: new object[] { 4, 1, new Guid("00000000-0000-0000-0000-000000000000"), "Isogen", 170000, 284720, 3, 1, 110 });
 
             migrationBuilder.InsertData(
                 table: "Items",
-                columns: new[] { "Id", "Guid", "Name", "Quantity", "ReorderCreditValue", "ReorderLevel", "SupplyTypeId", "TypeId", "UnitPrice" },
-                values: new object[] { 6, new Guid("00000000-0000-0000-0000-000000000000"), "Zydrine", 5413, 1, 0, 4, 1, 225 });
+                columns: new[] { "Id", "CorpCreditMultiplier", "Guid", "Name", "Quantity", "ReorderLevel", "SupplyTypeId", "TypeId", "UnitPrice" },
+                values: new object[] { 6, 1, new Guid("00000000-0000-0000-0000-000000000000"), "Zydrine", 5413, 0, 4, 1, 225 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Items_SupplyTypeId",

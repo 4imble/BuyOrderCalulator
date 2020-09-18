@@ -22,6 +22,9 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("CorpCreditMultiplier")
+                        .HasColumnType("INTEGER");
+
                     b.Property<Guid>("Guid")
                         .HasColumnType("TEXT");
 
@@ -29,9 +32,6 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ReorderCreditValue")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ReorderLevel")
@@ -58,10 +58,10 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         new
                         {
                             Id = 1,
+                            CorpCreditMultiplier = 1,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Tritanium",
                             Quantity = 17450000,
-                            ReorderCreditValue = 1,
                             ReorderLevel = 18742950,
                             SupplyTypeId = 1,
                             TypeId = 1,
@@ -70,10 +70,10 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         new
                         {
                             Id = 2,
+                            CorpCreditMultiplier = 1,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Pyerite",
                             Quantity = 6950000,
-                            ReorderCreditValue = 1,
                             ReorderLevel = 5312610,
                             SupplyTypeId = 2,
                             TypeId = 1,
@@ -82,10 +82,10 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         new
                         {
                             Id = 3,
+                            CorpCreditMultiplier = 1,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Mexallon",
                             Quantity = 2290000,
-                            ReorderCreditValue = 1,
                             ReorderLevel = 1665210,
                             SupplyTypeId = 3,
                             TypeId = 1,
@@ -94,10 +94,10 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         new
                         {
                             Id = 4,
+                            CorpCreditMultiplier = 1,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Isogen",
                             Quantity = 170000,
-                            ReorderCreditValue = 1,
                             ReorderLevel = 284720,
                             SupplyTypeId = 3,
                             TypeId = 1,
@@ -106,10 +106,10 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         new
                         {
                             Id = 5,
+                            CorpCreditMultiplier = 1,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Nocxium",
                             Quantity = 130000,
-                            ReorderCreditValue = 1,
                             ReorderLevel = 67810,
                             SupplyTypeId = 2,
                             TypeId = 1,
@@ -118,10 +118,10 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         new
                         {
                             Id = 6,
+                            CorpCreditMultiplier = 1,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Zydrine",
                             Quantity = 5413,
-                            ReorderCreditValue = 1,
                             ReorderLevel = 0,
                             SupplyTypeId = 4,
                             TypeId = 1,
