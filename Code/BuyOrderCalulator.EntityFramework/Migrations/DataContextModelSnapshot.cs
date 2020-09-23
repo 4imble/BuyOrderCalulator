@@ -22,11 +22,11 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CorpCreditMultiplier")
-                        .HasColumnType("INTEGER");
-
                     b.Property<Guid>("Guid")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("MarketPrice")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
@@ -43,9 +43,6 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                     b.Property<int>("TypeId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UnitPrice")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("SupplyTypeId");
@@ -58,74 +55,68 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         new
                         {
                             Id = 1,
-                            CorpCreditMultiplier = 1,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            MarketPrice = 2,
                             Name = "Tritanium",
                             Quantity = 17450000,
                             ReorderLevel = 18742950,
                             SupplyTypeId = 1,
-                            TypeId = 1,
-                            UnitPrice = 2
+                            TypeId = 1
                         },
                         new
                         {
                             Id = 2,
-                            CorpCreditMultiplier = 1,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            MarketPrice = 18,
                             Name = "Pyerite",
                             Quantity = 6950000,
                             ReorderLevel = 5312610,
                             SupplyTypeId = 2,
-                            TypeId = 1,
-                            UnitPrice = 18
+                            TypeId = 1
                         },
                         new
                         {
                             Id = 3,
-                            CorpCreditMultiplier = 1,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            MarketPrice = 32,
                             Name = "Mexallon",
                             Quantity = 2290000,
                             ReorderLevel = 1665210,
                             SupplyTypeId = 3,
-                            TypeId = 1,
-                            UnitPrice = 32
+                            TypeId = 1
                         },
                         new
                         {
                             Id = 4,
-                            CorpCreditMultiplier = 1,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            MarketPrice = 110,
                             Name = "Isogen",
                             Quantity = 170000,
                             ReorderLevel = 284720,
                             SupplyTypeId = 3,
-                            TypeId = 1,
-                            UnitPrice = 110
+                            TypeId = 1
                         },
                         new
                         {
                             Id = 5,
-                            CorpCreditMultiplier = 1,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            MarketPrice = 1000,
                             Name = "Nocxium",
                             Quantity = 130000,
                             ReorderLevel = 67810,
                             SupplyTypeId = 2,
-                            TypeId = 1,
-                            UnitPrice = 1000
+                            TypeId = 1
                         },
                         new
                         {
                             Id = 6,
-                            CorpCreditMultiplier = 1,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            MarketPrice = 225,
                             Name = "Zydrine",
                             Quantity = 5413,
                             ReorderLevel = 0,
                             SupplyTypeId = 4,
-                            TypeId = 1,
-                            UnitPrice = 225
+                            TypeId = 1
                         });
                 });
 
@@ -178,13 +169,16 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<double>("CorpCreditPercent")
+                        .HasColumnType("REAL");
+
                     b.Property<Guid>("Guid")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PriceModifier")
+                    b.Property<int>("PricePercentModifier")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -195,30 +189,34 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         new
                         {
                             Id = 1,
+                            CorpCreditPercent = 2.0,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "High",
-                            PriceModifier = 0
+                            PricePercentModifier = 80
                         },
                         new
                         {
                             Id = 2,
+                            CorpCreditPercent = 3.0,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Low",
-                            PriceModifier = 0
+                            PricePercentModifier = 90
                         },
                         new
                         {
                             Id = 3,
+                            CorpCreditPercent = 4.0,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Emergency",
-                            PriceModifier = 0
+                            PricePercentModifier = 105
                         },
                         new
                         {
                             Id = 4,
+                            CorpCreditPercent = 0.0,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Unwanted",
-                            PriceModifier = 0
+                            PricePercentModifier = 1
                         });
                 });
 

@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom'
 import './index.css';
-import Lobby from './pages/lobby/Lobby';
+import Order from './pages/order/Order';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   //<React.StrictMode>
   <BrowserRouter>
-      <Route exact path="/" component={Lobby} />
+      <Route exact path="/" component={Order} />
   </BrowserRouter>,
   //</React.StrictMode>,
   document.getElementById('root')

@@ -5,11 +5,11 @@ import { Item, SaleItem } from '../../domain/domain';
 import NumberFormat from 'react-number-format';
 import SellModal from './SellModal'
 import { DeleteOutlined } from '@ant-design/icons';
-import './Lobby.less'
+import './Order.less'
 
 const { Header, Content } = Layout;
 
-export default function Lobby(props: any) {
+export default function Order(props: any) {
     const history = useHistory();
     const [allItems, setAllItems] = useState<Item[]>([]);
     const [saleItems, setSaleItems] = useState<SaleItem[]>([]);
@@ -34,13 +34,13 @@ export default function Lobby(props: any) {
     const iskFormat = (value: number) => <NumberFormat value={value} displayType={'text'} thousandSeparator={true} prefix={'Ƶ '} />
     const numberFormat = (value: number | string) => <NumberFormat value={value} displayType={'text'} thousandSeparator={true} />
 
-    function addSaleItem(saleItem:SaleItem) {
+    function addSaleItem(saleItem: SaleItem) {
         var items = [...saleItems];
         items.push(saleItem);
         setSaleItems(items);
     }
 
-    function removeSaleItem(saleItem:SaleItem) {
+    function removeSaleItem(saleItem: SaleItem) {
         var items = [...saleItems];
         setSaleItems(items.filter(x => x.itemId != saleItem.itemId));
     }
@@ -51,27 +51,38 @@ export default function Lobby(props: any) {
         { title: 'Unit Price', dataIndex: 'unitPrice', key: 'unitPrice', render: iskFormat },
         { title: 'Quantity', dataIndex: 'quantity', key: 'quantity', render: numberFormat },
         { title: 'Reorder Level', dataIndex: 'reorderLevel', key: 'reorderLevel', render: numberFormat },
-        { title: 'Corp Credit', dataIndex: 'corpCreditMultiplier', key: 'corpCreditMultiplier', render: (value: number) => (value * 2.5) + "%" },
+        { title: 'Corp Credit', dataIndex: 'corpCreditPercent', key: 'corpCreditPercent', render: (value: number) => value + "%" },
         { title: 'Supply Level', dataIndex: 'supplyTypeName', key: 'supplyTypeName' },
-        { key: 'sell', render: (cell:null, item:Item) => <SellModal item={item} addSaleItem={addSaleItem} /> },
+        { key: 'sell', render: (cell: null, item: Item) => <SellModal item={item} addSaleItem={addSaleItem} /> },
     ]
 
-    function getSalePrice(saleItem: SaleItem)
-    {
+    function getSalePrice(saleItem: SaleItem) {
         let item = allItems.find(x => x.id == saleItem.itemId);
-        let price = item!.unitPrice * saleItem.quantity;
-        return iskFormat(price);
+        return item!.unitPrice * saleItem.quantity;
+    }
+
+    function getCorpCredit(saleItem: SaleItem) {
+        let item = allItems.find(x => x.id == saleItem.itemId);
+        return Math.ceil((item!.corpCreditPercent / 100) * getSalePrice(saleItem));
     }
 
     const saleColumns = [
-        { title: 'Name', dataIndex: 'itemId', key: 'itemId', render: (cell:number) => allItems.find(x => x.id == cell)?.name },
+        { title: 'Name', dataIndex: 'itemId', key: 'itemId', render: (cell: number) => allItems.find(x => x.id == cell)?.name },
         { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
-        { title: 'Sale Price', dataIndex: 'unitPrice', key: 'unitPrice', render: (cell:null, saleItem: SaleItem) => getSalePrice(saleItem) },
-        { key: 'delete', render: (cell:null, item:SaleItem) => <DeleteOutlined onClick={() => removeSaleItem(item)} /> },
+        { title: 'Sale Price', dataIndex: 'unitPrice', key: 'unitPrice', render: (cell: null, saleItem: SaleItem) => iskFormat(getSalePrice(saleItem)) },
+        { key: 'delete', render: (cell: null, item: SaleItem) => <DeleteOutlined onClick={() => removeSaleItem(item)} /> },
     ]
 
-    let itemTable = <Table rowKey='id' pagination={{hideOnSinglePage: true}} className="table" rowClassName={(item) => item.supplyTypeName} columns={itemColumns} dataSource={filteredItems()} />;
-    let saleTable = <Table rowKey='itemId' pagination={{hideOnSinglePage: true}} className="table" columns={saleColumns} dataSource={saleItems} locale={{emptyText: "- Empty -"}} />;
+    let itemTable = <Table rowKey='id' pagination={{ hideOnSinglePage: true }} className="table" rowClassName={(item) => item.supplyTypeName} columns={itemColumns} dataSource={filteredItems()} />;
+    let saleTable = <Table rowKey='itemId' pagination={{ hideOnSinglePage: true }} className="table" columns={saleColumns} dataSource={saleItems} locale={{ emptyText: "- Empty -" }} />;
+    let totalSale = saleItems.length ? saleItems.map(x => getSalePrice(x)).reduce((total, item) => total + item) : 0;
+    let totalCredit = saleItems.length ? saleItems.map(x => getCorpCredit(x)).reduce((total, item) => total + item) : 0;
+    let summary = saleItems.length ? <div className="summary">
+        <div className="total">Total sale: {iskFormat(totalSale)}</div>
+        <div className="total">Corp credit: {iskFormat(totalCredit)}</div>
+        <div className="note">note: prices may have changed since starting this form</div>
+    </div> : <></>;
+
 
     return (
         <Layout>
@@ -93,7 +104,10 @@ export default function Lobby(props: any) {
                         {itemTable}
                     </Col>
                     <Col flex={3}>
-                        {saleTable}
+                        <div className="cart">
+                            {saleTable}
+                            {summary}
+                        </div>
                     </Col>
                 </Row>
             </Content>

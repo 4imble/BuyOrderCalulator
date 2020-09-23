@@ -4,10 +4,9 @@ namespace BuyOrderCalc.Domain
     public class Item: Entity
     {
         public string Name { get; set; }
-        public int UnitPrice { get; set; }
+        public int MarketPrice { get; set; }
         public int Quantity { get; set; }
         public int ReorderLevel { get; set; }
-        public int CorpCreditMultiplier { get; set; }
 
         public int TypeId { get; set; }
         public ItemType Type { get; set; }

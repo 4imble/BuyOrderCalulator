@@ -42,19 +42,19 @@ namespace BuyOrderCalc.EntityFramework
                 );
 
             builder.Entity<SupplyType>().HasData(
-                new SupplyType { Id = 1, Name = "High" },
-                new SupplyType { Id = 2, Name = "Low" },
-                new SupplyType { Id = 3, Name = "Emergency" },
-                new SupplyType { Id = 4, Name = "Unwanted" }
+                new SupplyType { Id = 1, Name = "High", PricePercentModifier = 80, CorpCreditPercent = 2 },
+                new SupplyType { Id = 2, Name = "Low", PricePercentModifier = 90, CorpCreditPercent = 3 },
+                new SupplyType { Id = 3, Name = "Emergency", PricePercentModifier = 105, CorpCreditPercent = 4 },
+                new SupplyType { Id = 4, Name = "Unwanted", PricePercentModifier = 1, CorpCreditPercent = 0 }
             );
 
             builder.Entity<Item>().HasData(
-                new Item { Id = 1, Name = "Tritanium", TypeId = 1, UnitPrice = 2, Quantity = 17450000, CorpCreditMultiplier = 1, ReorderLevel = 18742950, SupplyTypeId = 1 },
-                new Item { Id = 2, Name = "Pyerite", TypeId = 1, UnitPrice = 18, Quantity = 6950000, CorpCreditMultiplier = 1, ReorderLevel = 5312610, SupplyTypeId = 2 },
-                new Item { Id = 3, Name = "Mexallon", TypeId = 1, UnitPrice = 32, Quantity = 2290000, CorpCreditMultiplier = 1, ReorderLevel = 1665210, SupplyTypeId = 3 },
-                new Item { Id = 4, Name = "Isogen", TypeId = 1, UnitPrice = 110, Quantity = 170000, CorpCreditMultiplier = 1, ReorderLevel = 284720, SupplyTypeId = 3 },
-                new Item { Id = 5, Name = "Nocxium", TypeId = 1, UnitPrice = 1000, Quantity = 130000, CorpCreditMultiplier = 1, ReorderLevel = 67810, SupplyTypeId = 2 },
-                new Item { Id = 6, Name = "Zydrine", TypeId = 1, UnitPrice = 225, Quantity = 5413, CorpCreditMultiplier = 1, ReorderLevel = 0, SupplyTypeId = 4 }
+                new Item { Id = 1, Name = "Tritanium", TypeId = 1, MarketPrice = 2, Quantity = 17450000, ReorderLevel = 18742950, SupplyTypeId = 1 },
+                new Item { Id = 2, Name = "Pyerite", TypeId = 1, MarketPrice = 18, Quantity = 6950000, ReorderLevel = 5312610, SupplyTypeId = 2 },
+                new Item { Id = 3, Name = "Mexallon", TypeId = 1, MarketPrice = 32, Quantity = 2290000, ReorderLevel = 1665210, SupplyTypeId = 3 },
+                new Item { Id = 4, Name = "Isogen", TypeId = 1, MarketPrice = 110, Quantity = 170000, ReorderLevel = 284720, SupplyTypeId = 3 },
+                new Item { Id = 5, Name = "Nocxium", TypeId = 1, MarketPrice = 1000, Quantity = 130000, ReorderLevel = 67810, SupplyTypeId = 2 },
+                new Item { Id = 6, Name = "Zydrine", TypeId = 1, MarketPrice = 225, Quantity = 5413, ReorderLevel = 0, SupplyTypeId = 4 }
                 );
         }
 
