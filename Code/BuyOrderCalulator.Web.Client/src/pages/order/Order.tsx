@@ -20,7 +20,7 @@ export default function Order(props: any) {
     }, []);
 
     async function fetchItems() {
-        const result = await fetch("api/items");
+        const result = await fetch("/api/items");
         result.json().then(res => setAllItems(res))
             .catch(err => console.log(err));
     }
@@ -74,14 +74,14 @@ export default function Order(props: any) {
             },
             body: JSON.stringify(saleItems)
         });
-        result.json().then(res => alert(res))
+        result.text().then(res => alert(res))
             .catch(err => console.log(err));
     }
 
     const saleColumns = [
         { title: 'Name', dataIndex: 'itemId', key: 'itemId', render: (cell: number) => allItems.find(x => x.id == cell)?.name },
         { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
-        { title: 'Sale Price', dataIndex: 'unitPrice', key: 'unitPrice', render: (cell: null, saleItem: SaleItem) => iskFormat(getSalePrice(saleItem)) },
+        { title: 'Sale Price', key: 'salePrice', render: (cell: null, saleItem: SaleItem) => iskFormat(getSalePrice(saleItem)) },
         { key: 'delete', render: (cell: null, item: SaleItem) => <DeleteOutlined onClick={() => removeSaleItem(item)} /> },
     ]
 

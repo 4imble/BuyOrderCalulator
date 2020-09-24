@@ -21,3 +21,28 @@ export class SaleItem
     itemId: number = 0;
     quantity: number = 0;
 }
+
+export class Order
+{
+    id: number = 0;
+    guid: string = "";
+    orderItems: Array<OrderItem> = [];
+    dateCreated: string = "";
+    state: OrderStatus = OrderStatus.Open
+}
+
+export class OrderItem
+{
+    quantity: number = 0;
+    fixedCorpCreditPercent: number = 0;
+    fixedUnitPrice: number = 0;
+    itemName: string = "";
+    itemId: number = 0;
+}
+
+export enum OrderStatus
+{
+    Open,
+    Complete,
+    Cancelled
+}
