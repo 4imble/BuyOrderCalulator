@@ -60,6 +60,7 @@ namespace BuyOrderCalc.EntityFramework
 
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemType> ItemTypes { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
     }
 }

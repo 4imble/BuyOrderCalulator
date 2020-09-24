@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BuyOrderCalc.Domain;
 using BuyOrderCalc.EntityFramework;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using BuyOrderCalc.Web.Server.Buillders;
+using BuyOrderCalc.Web.Server.Builders;
+using BuyOrderCalc.Web.Server.Models.ToClient;
 
-namespace BuyOrderCalc.Web.Server
+namespace BuyOrderCalc.Web.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

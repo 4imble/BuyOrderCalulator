@@ -22,6 +22,21 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Guid = table.Column<Guid>(nullable: false),
+                    State = table.Column<int>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SupplyType",
                 columns: table => new
                 {
@@ -66,6 +81,36 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         principalTable: "ItemTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Guid = table.Column<Guid>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    FixedUnitPrice = table.Column<int>(nullable: false),
+                    FixedCorpCreditPercent = table.Column<double>(nullable: false),
+                    ItemId = table.Column<int>(nullable: false),
+                    OrderId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderItem_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderItem_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -147,12 +192,28 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 name: "IX_Items_TypeId",
                 table: "Items",
                 column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItem_ItemId",
+                table: "OrderItem",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItem_OrderId",
+                table: "OrderItem",
+                column: "OrderId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "OrderItem");
+
+            migrationBuilder.DropTable(
                 name: "Items");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "SupplyType");

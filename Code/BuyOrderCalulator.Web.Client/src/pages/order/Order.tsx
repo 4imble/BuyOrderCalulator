@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Input, Layout, Table } from 'antd';
+import { Row, Col, Input, Layout, Table, Button } from 'antd';
 import { Item, SaleItem } from '../../domain/domain';
 import NumberFormat from 'react-number-format';
 import SellModal from './SellModal'
@@ -66,6 +66,18 @@ export default function Order(props: any) {
         return Math.ceil((item!.corpCreditPercent / 100) * getSalePrice(saleItem));
     }
 
+    async function submitOrder() {
+        const result = await fetch("api/order", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(saleItems)
+        });
+        result.json().then(res => alert(res))
+            .catch(err => console.log(err));
+    }
+
     const saleColumns = [
         { title: 'Name', dataIndex: 'itemId', key: 'itemId', render: (cell: number) => allItems.find(x => x.id == cell)?.name },
         { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
@@ -81,6 +93,7 @@ export default function Order(props: any) {
         <div className="total">Total sale: {iskFormat(totalSale)}</div>
         <div className="total">Corp credit: {iskFormat(totalCredit)}</div>
         <div className="note">note: prices may have changed since starting this form</div>
+        <Button block type="primary" onClick={submitOrder}>Submit Order</Button>
     </div> : <></>;
 
 
@@ -89,9 +102,8 @@ export default function Order(props: any) {
             <Header className="header">
                 <Row>
                     <Col flex='auto' className="title">
-                        <img height='40px' src={require('../../images/nilf_logo.png')} />
-                        Nilfgaard Industries
-                        </Col>
+                        <img src={require('../../images/nilf_banner.png')} />
+                    </Col>
                     <Col>Repp's Buy Tool</Col>
                 </Row>
             </Header>

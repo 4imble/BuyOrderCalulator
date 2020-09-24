@@ -1,7 +1,9 @@
 ﻿using BuyOrderCalc.Domain;
+using BuyOrderCalc.Web.Server.Helpers;
+using BuyOrderCalc.Web.Server.Models.ToClient;
 using System;
 
-namespace BuyOrderCalc.Web.Server.Buillders
+namespace BuyOrderCalc.Web.Server.Builders
 {
     public static class ItemBuilder
     {
@@ -13,7 +15,7 @@ namespace BuyOrderCalc.Web.Server.Buillders
                 Name = item.Name,
                 Quantity = item.Quantity,
                 ReorderLevel = item.ReorderLevel,
-                UnitPrice = GetPercentage(item.MarketPrice, item.SupplyType.PricePercentModifier),
+                UnitPrice = Helper.GetPercentage(item.MarketPrice, item.SupplyType.PricePercentModifier),
                 TypeId = item.TypeId,
                 TypeName = item.Type.Name,
                 SupplyTypeId = item.SupplyType.Id,
@@ -21,12 +23,6 @@ namespace BuyOrderCalc.Web.Server.Buillders
                 PricePercentModifier = item.SupplyType.PricePercentModifier,
                 CorpCreditPercent = item.SupplyType.CorpCreditPercent
             };
-
-            int GetPercentage(int number, double percent)
-            {
-                var value = (percent / 100) * number;
-                return (int)Math.Ceiling(value);
-            }
         }
     }
 }

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BuyOrderCalc.EntityFramework.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200923135713_initial")]
+    [Migration("20200924161103_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -165,6 +165,59 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         });
                 });
 
+            modelBuilder.Entity("BuyOrderCalc.Domain.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("State")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("BuyOrderCalc.Domain.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("FixedCorpCreditPercent")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("FixedUnitPrice")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItem");
+                });
+
             modelBuilder.Entity("BuyOrderCalc.Domain.SupplyType", b =>
                 {
                     b.Property<int>("Id")
@@ -235,6 +288,19 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BuyOrderCalc.Domain.OrderItem", b =>
+                {
+                    b.HasOne("BuyOrderCalc.Domain.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BuyOrderCalc.Domain.Order", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId");
                 });
 #pragma warning restore 612, 618
         }

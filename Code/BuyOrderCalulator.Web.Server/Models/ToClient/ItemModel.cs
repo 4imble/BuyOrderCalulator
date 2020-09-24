@@ -1,4 +1,4 @@
-﻿namespace BuyOrderCalc.Domain
+﻿namespace BuyOrderCalc.Web.Server.Models.ToClient
 {
     public class ItemModel
     {
