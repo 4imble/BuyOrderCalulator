@@ -23,6 +23,7 @@ namespace BuyOrderCalc.Web.Server.Controllers
         public List<ItemModel> Get()
         {
             var items = dataContext.Items
+                .Where(x => x.IsActive)
                 .Include(x => x.Type)
                 .Include(x => x.SupplyType);
 

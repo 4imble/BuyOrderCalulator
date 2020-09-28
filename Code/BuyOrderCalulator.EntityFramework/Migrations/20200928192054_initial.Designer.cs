@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BuyOrderCalc.EntityFramework.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200924161103_initial")]
+    [Migration("20200928192054_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,8 +24,14 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ApiId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<Guid>("Guid")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("MarketPrice")
                         .HasColumnType("INTEGER");
@@ -52,74 +58,6 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                     b.HasIndex("TypeId");
 
                     b.ToTable("Items");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            MarketPrice = 2,
-                            Name = "Tritanium",
-                            Quantity = 17450000,
-                            ReorderLevel = 18742950,
-                            SupplyTypeId = 1,
-                            TypeId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            MarketPrice = 18,
-                            Name = "Pyerite",
-                            Quantity = 6950000,
-                            ReorderLevel = 5312610,
-                            SupplyTypeId = 2,
-                            TypeId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            MarketPrice = 32,
-                            Name = "Mexallon",
-                            Quantity = 2290000,
-                            ReorderLevel = 1665210,
-                            SupplyTypeId = 3,
-                            TypeId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            MarketPrice = 110,
-                            Name = "Isogen",
-                            Quantity = 170000,
-                            ReorderLevel = 284720,
-                            SupplyTypeId = 3,
-                            TypeId = 1
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            MarketPrice = 1000,
-                            Name = "Nocxium",
-                            Quantity = 130000,
-                            ReorderLevel = 67810,
-                            SupplyTypeId = 2,
-                            TypeId = 1
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            MarketPrice = 225,
-                            Name = "Zydrine",
-                            Quantity = 5413,
-                            ReorderLevel = 0,
-                            SupplyTypeId = 4,
-                            TypeId = 1
-                        });
                 });
 
             modelBuilder.Entity("BuyOrderCalc.Domain.ItemType", b =>
@@ -143,23 +81,29 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         {
                             Id = 1,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Name = "Mineral"
+                            Name = "Unclassified"
                         },
                         new
                         {
                             Id = 2,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Name = "Planetary"
+                            Name = "Mineral"
                         },
                         new
                         {
                             Id = 3,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Name = "Debt"
+                            Name = "Planetary"
                         },
                         new
                         {
                             Id = 4,
+                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Name = "Debt"
+                        },
+                        new
+                        {
+                            Id = 5,
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Wallet"
                         });
