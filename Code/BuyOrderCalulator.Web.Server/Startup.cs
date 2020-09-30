@@ -24,6 +24,13 @@ namespace BuyOrderCalc.Web.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(options => { /* Authentication options */ })
+                .AddDiscord(options =>
+                {
+                    options.ClientId = "760234712446402560";
+                    options.ClientSecret = "MBuAhtzBgI4fIos0wqatQreSm68j9TPy";
+                });
+
             services.AddMvc(
                 options =>
                 {
@@ -58,6 +65,9 @@ namespace BuyOrderCalc.Web.Server
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
