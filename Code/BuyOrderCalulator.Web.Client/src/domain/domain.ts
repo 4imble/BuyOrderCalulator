@@ -46,3 +46,9 @@ export enum OrderStatus
     Complete,
     Cancelled
 }
+
+export class User
+{
+    name: string = "";
+    token: string = "";
+}

@@ -104,7 +104,7 @@ export default function Order(props: any) {
                     <Col flex='auto' className="title">
                         <img src={require('../../images/nilf_banner.png')} />
                     </Col>
-                    <Col>Repp's Buy Tool</Col>
+                    <Col>Repp's Buy Tool {props.user?.name}</Col>
                 </Row>
             </Header>
             <Content>
