@@ -11,14 +11,19 @@ export default function App(props: any) {
     const [cookie, setCookie, removeCookie] = useCookies(['auth']);
 
     useEffect(() => {
+        if(window.location.pathname == "/login")
+            return;
+
         if (!user) {
             getUser();
         }
     }, []);
 
     async function getUser() {
-        if (!cookie.auth)
+        if (!cookie.auth) {
             triggerAuthAndSetCode();
+            return;
+        }
 
         var result = await fetch(`/api/auth/getUser`, {
             method: 'POST',
@@ -28,8 +33,10 @@ export default function App(props: any) {
             body: JSON.stringify({ DiscordId: cookie.auth.discordId, AccessToken: cookie.auth.token })
         })
 
-        if (result.status == 204)
+        if (result.status == 204) {
             triggerAuthAndSetCode();
+            return;
+        }
         else
             result.json()
                 .then((user) => {
