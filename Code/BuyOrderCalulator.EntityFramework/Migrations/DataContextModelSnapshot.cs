@@ -217,6 +217,41 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         });
                 });
 
+            modelBuilder.Entity("BuyOrderCalc.Domain.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AccessToken")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Avatar")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DiscordId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Discriminator")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("TokenExpires")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("BuyOrderCalc.Domain.Item", b =>
                 {
                     b.HasOne("BuyOrderCalc.Domain.SupplyType", "SupplyType")

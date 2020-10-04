@@ -104,7 +104,7 @@ export default function Order(props: any) {
                     <Col flex='auto' className="title">
                         <img src={require('../../images/nilf_banner.png')} />
                     </Col>
-                    <Col>Repp's Buy Tool {props.user?.name}</Col>
+                    <Col>Repp's Buy Tool</Col>
                 </Row>
             </Header>
             <Content>
@@ -117,6 +117,10 @@ export default function Order(props: any) {
                     </Col>
                     <Col flex={3}>
                         <div className="cart">
+                            <div className="user">
+                                <span className="name">{props.user?.username}<span className="discrim">#{props.user?.discriminator}</span></span>
+                                <img src={props.user?.avatarLink} />
+                            </div>
                             {saleTable}
                             {summary}
                         </div>

@@ -22,6 +22,7 @@ namespace BuyOrderCalc.Web.Server.Builders
         {
             return new OrderItemModel
             {
+                Id = orderItem.Id,
                 Quantity = orderItem.Quantity,
                 FixedCorpCreditPercent = orderItem.FixedCorpCreditPercent,
                 FixedUnitPrice = orderItem.FixedUnitPrice,

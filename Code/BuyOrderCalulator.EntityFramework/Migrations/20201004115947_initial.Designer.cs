@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BuyOrderCalc.EntityFramework.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200928192054_initial")]
+    [Migration("20201004115947_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -217,6 +217,41 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                             Name = "Unwanted",
                             PricePercentModifier = 1
                         });
+                });
+
+            modelBuilder.Entity("BuyOrderCalc.Domain.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AccessToken")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Avatar")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DiscordId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Discriminator")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("TokenExpires")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("BuyOrderCalc.Domain.Item", b =>

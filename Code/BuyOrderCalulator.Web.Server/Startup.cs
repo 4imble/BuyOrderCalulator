@@ -7,8 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SimpleInjector;
 using BuyOrderCalc.EntityFramework;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Logging;
+using BuyOrderCalc.Web.Server.Helpers;
 
 namespace BuyOrderCalc.Web.Server
 {
@@ -25,18 +24,6 @@ namespace BuyOrderCalc.Web.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            IdentityModelEventSource.ShowPII = true;
-            services.AddAuthentication(o =>
-            {
-                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
-            {
-                o.Authority = "https://discord.com/api";
-                o.Audience = "reppbuytool";
-                o.RequireHttpsMetadata = false;
-            });
-
             services.AddMvc(
                 options =>
                 {
@@ -52,6 +39,8 @@ namespace BuyOrderCalc.Web.Server
 
                 options.AddLogging();
             });
+
+            container.Register<AuthHelper>();
 
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
@@ -71,9 +60,6 @@ namespace BuyOrderCalc.Web.Server
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

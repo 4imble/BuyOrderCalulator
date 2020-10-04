@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BuyOrderCalc.Domain;
+using BuyOrderCalc.EntityFramework;
+using BuyOrderCalc.Web.Server.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
 using RestSharp.Authenticators;
+using System;
+using System.Linq;
 
 namespace BuyOrderCalc.Web.Server.Controllers
 {
@@ -9,8 +14,17 @@ namespace BuyOrderCalc.Web.Server.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly AuthHelper authHelper;
+        private readonly DataContext dataContext;
+
+        public AuthController(AuthHelper authHelper, DataContext dataContext)
+        {
+            this.authHelper = authHelper;
+            this.dataContext = dataContext;
+        }
+
         [HttpGet("{code}")]
-        public TokenResponse Get(string code)
+        public User Get(string code)
         {
             var clientId = "760234712446402560";
             var secret = "MBuAhtzBgI4fIos0wqatQreSm68j9TPy";
@@ -21,17 +35,19 @@ namespace BuyOrderCalc.Web.Server.Controllers
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
             request.AddParameter("application/x-www-form-urlencoded", endpoint, ParameterType.RequestBody);
             var response = client.Execute<TokenResponse>(request);
-            return response.Data;
+
+            return authHelper.SetUser(response.Data);
         }
 
-        [Authorize]
-        [HttpGet()]
+        [HttpPost]
         [Route("GetUser")]
-        public void GetUser()
+        public User GetUser(UserCreds creds)
         {
-            var currentUser = HttpContext.User;
+            return dataContext.Users.SingleOrDefault(x => 
+                x.DiscordId == creds.DiscordId && 
+                x.AccessToken == creds.AccessToken &&
+                x.TokenExpires > DateTime.Now);
         }
-
 
         public class TokenResponse
         {
@@ -43,5 +59,11 @@ namespace BuyOrderCalc.Web.Server.Controllers
             public string scope { get; set; }
             public string token_type { get; set; }
         }
+    }
+
+    public class UserCreds
+    {
+        public string DiscordId { get; set; }
+        public string AccessToken { get; set; }
     }
 }

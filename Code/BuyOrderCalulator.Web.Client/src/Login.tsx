@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { User } from './domain/domain';
 import queryString from 'query-string';
+import { useCookies } from 'react-cookie';
 
-export default function App(props: any) {
+export default function Login(props: any) {
     const history = useHistory();
+    const [cookie, setCookie, removeCookie] = useCookies(['auth']);
 
     useEffect(() => {
         let code = getQueryCode();
-        if (code) {
-            getAuthTokenAndSetUser(code);
-        } else
-            window.location.replace('https://discord.com/api/oauth2/authorize?response_type=code&client_id=760234712446402560&redirect_uri=http://localhost:5000/login&scope=identify&audience=reppbuytool&state=gimble');
+        reAuthUserForCode(code as string);
     }, []);
 
     function getQueryCode() {
@@ -19,30 +17,17 @@ export default function App(props: any) {
         return search ? queryString.parse(search).code : null;
     }
 
-    async function getAuthTokenAndSetUser(code: any) {
-        let token: any = {};
-
+    async function reAuthUserForCode(code: string) {
         await fetch(`/api/auth/${code}`)
             .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                token = data;
+            .then((user) => {
+                setCookie('auth', { token: user.accessToken, discordId: user.discordId });
+                props.setUser(user);
+                history.push("/");
             })
             .catch(error => {
                 console.log(error);
             });
-
-            await fetch("/api/auth/getUser", {
-                method: "GET",
-                headers: {
-                  'Content-Type': 'application/json',
-                  Accept: 'application/json',
-                  'Authorization': `Bearer ${token.access_token}`
-                }
-              })
-
-        //props.setUser(user);
-        history.push('/');
     }
 
     return (

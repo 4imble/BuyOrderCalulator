@@ -22,5 +22,6 @@ namespace BuyOrderCalc.Web.Server.Models.ToClient
 
         public int ItemId { get; set; }
         public string ItemName { get; set; }
+        public int Id { get; internal set; }
     }
 }

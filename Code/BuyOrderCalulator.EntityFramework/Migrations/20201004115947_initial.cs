@@ -53,6 +53,26 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Guid = table.Column<Guid>(nullable: false),
+                    DiscordId = table.Column<string>(nullable: true),
+                    Username = table.Column<string>(nullable: true),
+                    Avatar = table.Column<string>(nullable: true),
+                    Discriminator = table.Column<string>(nullable: true),
+                    IsAdmin = table.Column<bool>(nullable: false),
+                    AccessToken = table.Column<string>(nullable: true),
+                    TokenExpires = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Items",
                 columns: table => new
                 {
@@ -185,6 +205,9 @@ namespace BuyOrderCalc.EntityFramework.Migrations
         {
             migrationBuilder.DropTable(
                 name: "OrderItem");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Items");

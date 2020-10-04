@@ -4,26 +4,50 @@ import { User } from './domain/domain';
 import Order from './pages/order/Order';
 import Login from './Login';
 import ViewOrder from './pages/order/ViewOrder';
-import queryString from 'query-string';
+import { useCookies } from 'react-cookie';
 
 export default function App(props: any) {
     const [user, setUser] = useState<User>();
-    const history = useHistory();
+    const [cookie, setCookie, removeCookie] = useCookies(['auth']);
+
     useEffect(() => {
         if (!user) {
-            history.push("/login");
+            getUser();
         }
     }, []);
 
-    function getQueryCode() {
-        let search = window.location.search;
-        return search ? queryString.parse(search).code : null;
+    async function getUser() {
+        if (!cookie.auth)
+            triggerAuthAndSetCode();
+
+        var result = await fetch(`/api/auth/getUser`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ DiscordId: cookie.auth.discordId, AccessToken: cookie.auth.token })
+        })
+
+        if (result.status == 204)
+            triggerAuthAndSetCode();
+        else
+            result.json()
+                .then((user) => {
+                    setUser(user);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+    }
+
+    async function triggerAuthAndSetCode() {
+        window.location.replace('https://discord.com/api/oauth2/authorize?response_type=code&client_id=760234712446402560&redirect_uri=http://localhost:5000/login&scope=identify&audience=reppbuytool&state=gimble');
     }
 
     return (
         <>
             <Route exact path="/" render={(props) => (<Order user={user}></Order>)} />
-            <Route path="/order/:id" render={(props) => (<ViewOrder user={user}></ViewOrder>)} />
+            <Route path="/order/:id" render={(props) => (<ViewOrder user={user} match={props.match}></ViewOrder>)} />
             <Route path="/login" render={(props) => (<Login user={user} setUser={setUser}></Login>)} />
         </>
     )
