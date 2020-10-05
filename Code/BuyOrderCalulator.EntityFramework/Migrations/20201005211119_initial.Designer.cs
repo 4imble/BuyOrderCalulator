@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BuyOrderCalc.EntityFramework.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201004115947_initial")]
+    [Migration("20201005211119_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -182,7 +182,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SupplyType");
+                    b.ToTable("SupplyTypes");
 
                     b.HasData(
                         new

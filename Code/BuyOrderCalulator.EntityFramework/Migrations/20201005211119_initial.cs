@@ -37,7 +37,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SupplyType",
+                name: "SupplyTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -49,7 +49,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SupplyType", x => x.Id);
+                    table.PrimaryKey("PK_SupplyTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,9 +92,9 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 {
                     table.PrimaryKey("PK_Items", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Items_SupplyType_SupplyTypeId",
+                        name: "FK_Items_SupplyTypes_SupplyTypeId",
                         column: x => x.SupplyTypeId,
-                        principalTable: "SupplyType",
+                        principalTable: "SupplyTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -161,22 +161,22 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 values: new object[] { 5, new Guid("00000000-0000-0000-0000-000000000000"), "Wallet" });
 
             migrationBuilder.InsertData(
-                table: "SupplyType",
+                table: "SupplyTypes",
                 columns: new[] { "Id", "CorpCreditPercent", "Guid", "Name", "PricePercentModifier" },
                 values: new object[] { 1, 2.0, new Guid("00000000-0000-0000-0000-000000000000"), "High", 80 });
 
             migrationBuilder.InsertData(
-                table: "SupplyType",
+                table: "SupplyTypes",
                 columns: new[] { "Id", "CorpCreditPercent", "Guid", "Name", "PricePercentModifier" },
                 values: new object[] { 2, 3.0, new Guid("00000000-0000-0000-0000-000000000000"), "Low", 90 });
 
             migrationBuilder.InsertData(
-                table: "SupplyType",
+                table: "SupplyTypes",
                 columns: new[] { "Id", "CorpCreditPercent", "Guid", "Name", "PricePercentModifier" },
                 values: new object[] { 3, 4.0, new Guid("00000000-0000-0000-0000-000000000000"), "Emergency", 105 });
 
             migrationBuilder.InsertData(
-                table: "SupplyType",
+                table: "SupplyTypes",
                 columns: new[] { "Id", "CorpCreditPercent", "Guid", "Name", "PricePercentModifier" },
                 values: new object[] { 4, 0.0, new Guid("00000000-0000-0000-0000-000000000000"), "Unwanted", 1 });
 
@@ -216,7 +216,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "SupplyType");
+                name: "SupplyTypes");
 
             migrationBuilder.DropTable(
                 name: "ItemTypes");

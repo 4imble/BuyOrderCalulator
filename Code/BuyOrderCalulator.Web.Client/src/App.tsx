@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Route, useHistory } from 'react-router-dom'
 import { User } from './domain/domain';
 import Order from './pages/order/Order';
+import Admin from './pages/order/Admin';
 import Login from './Login';
 import ViewOrder from './pages/order/ViewOrder';
 import { useCookies } from 'react-cookie';
@@ -56,6 +57,7 @@ export default function App(props: any) {
             <Route exact path="/" render={(props) => (<Order user={user}></Order>)} />
             <Route path="/order/:id" render={(props) => (<ViewOrder user={user} match={props.match}></ViewOrder>)} />
             <Route path="/login" render={(props) => (<Login user={user} setUser={setUser}></Login>)} />
+            <Route path="/admin" render={(props) => (<Admin user={user} setUser={setUser}></Admin>)} />
         </>
     )
 }

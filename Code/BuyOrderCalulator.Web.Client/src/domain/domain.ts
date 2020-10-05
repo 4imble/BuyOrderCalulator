@@ -5,7 +5,7 @@ export class Item
     unitPrice: number  = 0;
     quantity: number  = 0;
     reorderLevel: number  = 0;
-    takingOrders: boolean  = true;
+    isActive: boolean  = true;
 
     typeId: number = 0;
     typeName: string = "";
@@ -14,6 +14,26 @@ export class Item
     supplyTypeName: string = "";
     pricePercentModifier: number = 0;
     corpCreditPercent: number  = 0;
+}
+
+export class CommonData
+{
+    itemTypes: Array<ItemType> = [];
+    supplyTypes: Array<SupplyType> = [];
+}
+
+export class ItemType
+{
+    id: number = 0;
+    name: string = "";
+}
+
+export class SupplyType
+{
+    id: number = 0;
+    name: string = "";
+    pricePercentModifier: number = 0;
+    corpCreditPercent: number = 0;
 }
 
 export class SaleItem

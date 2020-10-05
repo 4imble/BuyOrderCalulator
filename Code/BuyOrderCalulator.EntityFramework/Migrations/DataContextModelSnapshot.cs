@@ -180,7 +180,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SupplyType");
+                    b.ToTable("SupplyTypes");
 
                     b.HasData(
                         new

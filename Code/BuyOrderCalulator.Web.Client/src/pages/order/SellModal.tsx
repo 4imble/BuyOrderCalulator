@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Button, Input } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import NumberFormat from 'react-number-format';
-import './SellModal.less'
+import './Modal.less'
 
 export default function SellModal(props: any) {
     const [visible, setVisible] = useState<boolean>(false);
