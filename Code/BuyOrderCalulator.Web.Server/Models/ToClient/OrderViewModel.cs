@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BuyOrderCalc.Web.Server.Models.ToClient
 {
-    public class OrderModel
+    public class OrderViewModel
     {
         public int Id { get; set; }
         public Guid Guid { get; set; }
@@ -12,6 +12,8 @@ namespace BuyOrderCalc.Web.Server.Models.ToClient
         public DateTime DateCreated { get; set; }
 
         public List<OrderItemModel> OrderItems { get; set; } = new List<OrderItemModel>();
+        public string UserNameDisplay { get; internal set; }
+        public string UserAvatarLink { get; internal set; }
     }
 
     public class OrderItemModel
@@ -22,5 +24,6 @@ namespace BuyOrderCalc.Web.Server.Models.ToClient
 
         public int ItemId { get; set; }
         public string ItemName { get; set; }
+        public int Id { get; internal set; }
     }
 }

@@ -1,24 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Row, Col, Input, Layout, Table, Button, Select } from 'antd';
-import { Item, SaleItem } from '../../domain/domain';
+import { Row, Col, Input, Layout, Table, Button } from 'antd';
+import { CommonData, Item, SaleItem } from '../../domain/domain';
 import NumberFormat from 'react-number-format';
-import SellModal from './SellModal'
+import AdminEditItem from './AdminEditItem'
 import { DeleteOutlined } from '@ant-design/icons';
+import { CheckSquareOutlined, CloseSquareOutlined } from '@ant-design/icons';
 import './Order.less'
 
 const { Header, Content } = Layout;
-const { Option } = Select;
 
-export default function Order(props: any) {
+export default function Admin(props: any) {
     const history = useHistory();
     const [allItems, setAllItems] = useState<Item[]>([]);
     const [saleItems, setSaleItems] = useState<SaleItem[]>([]);
     const [search, setSearch] = useState<string>("");
+    const [commonData, setCommonData] = useState<CommonData>();
 
     useEffect(() => {
+        if(props.user && !props.user.isAdmin)
+            history.push("/");
+            
         fetchItems();
+        fetchCommon();
     }, []);
+
+    async function fetchCommon() {
+        const result = await fetch("/api/admin/commonData");
+        result.json().then(res => setCommonData(res))
+            .catch(err => console.log(err));
+    }
 
     async function fetchItems() {
         const result = await fetch("/api/items");
@@ -28,7 +39,6 @@ export default function Order(props: any) {
 
     function filteredItems(): Array<Item> {
         return allItems
-            .filter(item => item.isActive)
             .filter(item => !saleItems.some(s => s.itemId == item.id))
             .filter(item => item.name.toUpperCase().startsWith(search.toUpperCase()))
     }
@@ -47,15 +57,33 @@ export default function Order(props: any) {
         setSaleItems(items.filter(x => x.itemId != saleItem.itemId));
     }
 
+    let activeToggle = (item: Item) => <Button type={item.isActive ? "primary" : "default"} onClick={() => toggleIsActive(item)} shape="circle" icon={item.isActive ? <CheckSquareOutlined /> : <CloseSquareOutlined />} />
+
+    async function toggleIsActive(item: Item) {
+        await fetch("api/admin/toggleActive", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ItemId: item.id, DiscordId: props.user.discordId, AccessToken: props.user.accessToken })
+        });
+
+        let items = [...allItems];
+        let itemToUpdate = items.find(x => x.id == item.id);
+        itemToUpdate!.isActive = !item.isActive;
+        setAllItems(items);
+    }
+
     const itemColumns = [
+        { title: 'Enabled', dataIndex: 'isActive', key: 'isActive', render: (cell: null, item: Item) => activeToggle(item) },
         { title: 'Name', dataIndex: 'name', key: 'name' },
         { title: 'Type', dataIndex: 'typeName', key: 'typeName' },
-        { title: 'Unit Price', dataIndex: 'unitPrice', key: 'unitPrice', render: iskFormat },
+        { title: 'Market Price', dataIndex: 'marketPrice', key: 'marketPrice', render: iskFormat },
         // { title: 'Quantity', dataIndex: 'quantity', key: 'quantity', render: numberFormat },
         // { title: 'Reorder Level', dataIndex: 'reorderLevel', key: 'reorderLevel', render: numberFormat },
         { title: 'Corp Credit', dataIndex: 'corpCreditPercent', key: 'corpCreditPercent', render: (value: number) => value + "%" },
         { title: 'Supply Level', dataIndex: 'supplyTypeName', key: 'supplyTypeName' },
-        { key: 'sell', render: (cell: null, item: Item) => <SellModal item={item} addSaleItem={addSaleItem} /> },
+        { key: 'edit', render: (cell: null, item: Item) => <AdminEditItem item={item} commonData={commonData} fetchItems={fetchItems} user={props.user} /> },
     ]
 
     function getSalePrice(saleItem: SaleItem) {
@@ -63,41 +91,7 @@ export default function Order(props: any) {
         return item!.unitPrice * saleItem.quantity;
     }
 
-    function getCorpCredit(saleItem: SaleItem) {
-        let item = allItems.find(x => x.id == saleItem.itemId);
-        return Math.ceil((item!.corpCreditPercent / 100) * getSalePrice(saleItem));
-    }
-
-    async function submitOrder() {
-        const result = await fetch("/api/order", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ SaleItems: saleItems, DiscordId: props.user.discordId, AccessToken: props.user.accessToken })
-        });
-        result.text().then(res => alert(res))
-            .catch(err => console.log(err));
-    }
-
-    const saleColumns = [
-        { title: 'Name', dataIndex: 'itemId', key: 'itemId', render: (cell: number) => allItems.find(x => x.id == cell)?.name },
-        { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
-        { title: 'Sale Price', key: 'salePrice', render: (cell: null, saleItem: SaleItem) => iskFormat(getSalePrice(saleItem)) },
-        { key: 'delete', render: (cell: null, item: SaleItem) => <DeleteOutlined onClick={() => removeSaleItem(item)} /> },
-    ]
-
     let itemTable = <Table rowKey='id' pagination={{ hideOnSinglePage: true }} className="table" rowClassName={(item) => item.supplyTypeName} columns={itemColumns} dataSource={filteredItems()} />;
-    let saleTable = <Table rowKey='itemId' pagination={{ hideOnSinglePage: true }} className="table" columns={saleColumns} dataSource={saleItems} locale={{ emptyText: "- Empty -" }} />;
-    let totalSale = saleItems.length ? saleItems.map(x => getSalePrice(x)).reduce((total, item) => total + item) : 0;
-    let totalCredit = saleItems.length ? saleItems.map(x => getCorpCredit(x)).reduce((total, item) => total + item) : 0;
-    let summary = saleItems.length ? <div className="summary">
-        <div className="total">Total sale: {iskFormat(totalSale)}</div>
-        <div className="total">Corp credit: {iskFormat(totalCredit)}</div>
-        <div className="note">note: prices may have changed since starting this form</div>
-        <Button block type="primary" onClick={submitOrder}>Submit Order</Button>
-    </div> : <></>;
-
 
     return (
         <Layout>
@@ -123,8 +117,6 @@ export default function Order(props: any) {
                                 <span className="name">{props.user?.username}<span className="discrim">#{props.user?.discriminator}</span></span>
                                 <img src={props.user?.avatarLink} />
                             </div>
-                            {saleTable}
-                            {summary}
                         </div>
                     </Col>
                 </Row>

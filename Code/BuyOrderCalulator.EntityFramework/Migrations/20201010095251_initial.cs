@@ -12,7 +12,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Guid = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
@@ -26,7 +26,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Guid = table.Column<Guid>(nullable: false),
                     State = table.Column<int>(nullable: false),
                     DateCreated = table.Column<DateTime>(nullable: false)
@@ -37,11 +37,11 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SupplyType",
+                name: "SupplyTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Guid = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     PricePercentModifier = table.Column<int>(nullable: false),
@@ -49,7 +49,27 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SupplyType", x => x.Id);
+                    table.PrimaryKey("PK_SupplyTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Guid = table.Column<Guid>(nullable: false),
+                    DiscordId = table.Column<string>(nullable: true),
+                    Username = table.Column<string>(nullable: true),
+                    Avatar = table.Column<string>(nullable: true),
+                    Discriminator = table.Column<string>(nullable: true),
+                    IsAdmin = table.Column<bool>(nullable: false),
+                    AccessToken = table.Column<string>(nullable: true),
+                    TokenExpires = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,7 +77,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Guid = table.Column<Guid>(nullable: false),
                     ApiId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
@@ -72,9 +92,9 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 {
                     table.PrimaryKey("PK_Items", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Items_SupplyType_SupplyTypeId",
+                        name: "FK_Items_SupplyTypes_SupplyTypeId",
                         column: x => x.SupplyTypeId,
-                        principalTable: "SupplyType",
+                        principalTable: "SupplyTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -90,7 +110,7 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Guid = table.Column<Guid>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
                     FixedUnitPrice = table.Column<int>(nullable: false),
@@ -118,47 +138,25 @@ namespace BuyOrderCalc.EntityFramework.Migrations
             migrationBuilder.InsertData(
                 table: "ItemTypes",
                 columns: new[] { "Id", "Guid", "Name" },
-                values: new object[] { 1, new Guid("00000000-0000-0000-0000-000000000000"), "Unclassified" });
+                values: new object[,]
+                {
+                    { 1, new Guid("00000000-0000-0000-0000-000000000000"), "Unclassified" },
+                    { 2, new Guid("00000000-0000-0000-0000-000000000000"), "Mineral" },
+                    { 3, new Guid("00000000-0000-0000-0000-000000000000"), "Planetary" },
+                    { 4, new Guid("00000000-0000-0000-0000-000000000000"), "Debt" },
+                    { 5, new Guid("00000000-0000-0000-0000-000000000000"), "Wallet" }
+                });
 
             migrationBuilder.InsertData(
-                table: "ItemTypes",
-                columns: new[] { "Id", "Guid", "Name" },
-                values: new object[] { 2, new Guid("00000000-0000-0000-0000-000000000000"), "Mineral" });
-
-            migrationBuilder.InsertData(
-                table: "ItemTypes",
-                columns: new[] { "Id", "Guid", "Name" },
-                values: new object[] { 3, new Guid("00000000-0000-0000-0000-000000000000"), "Planetary" });
-
-            migrationBuilder.InsertData(
-                table: "ItemTypes",
-                columns: new[] { "Id", "Guid", "Name" },
-                values: new object[] { 4, new Guid("00000000-0000-0000-0000-000000000000"), "Debt" });
-
-            migrationBuilder.InsertData(
-                table: "ItemTypes",
-                columns: new[] { "Id", "Guid", "Name" },
-                values: new object[] { 5, new Guid("00000000-0000-0000-0000-000000000000"), "Wallet" });
-
-            migrationBuilder.InsertData(
-                table: "SupplyType",
+                table: "SupplyTypes",
                 columns: new[] { "Id", "CorpCreditPercent", "Guid", "Name", "PricePercentModifier" },
-                values: new object[] { 1, 2.0, new Guid("00000000-0000-0000-0000-000000000000"), "High", 80 });
-
-            migrationBuilder.InsertData(
-                table: "SupplyType",
-                columns: new[] { "Id", "CorpCreditPercent", "Guid", "Name", "PricePercentModifier" },
-                values: new object[] { 2, 3.0, new Guid("00000000-0000-0000-0000-000000000000"), "Low", 90 });
-
-            migrationBuilder.InsertData(
-                table: "SupplyType",
-                columns: new[] { "Id", "CorpCreditPercent", "Guid", "Name", "PricePercentModifier" },
-                values: new object[] { 3, 4.0, new Guid("00000000-0000-0000-0000-000000000000"), "Emergency", 105 });
-
-            migrationBuilder.InsertData(
-                table: "SupplyType",
-                columns: new[] { "Id", "CorpCreditPercent", "Guid", "Name", "PricePercentModifier" },
-                values: new object[] { 4, 0.0, new Guid("00000000-0000-0000-0000-000000000000"), "Unwanted", 1 });
+                values: new object[,]
+                {
+                    { 1, 2.0, new Guid("00000000-0000-0000-0000-000000000000"), "High", 80 },
+                    { 2, 3.0, new Guid("00000000-0000-0000-0000-000000000000"), "Low", 90 },
+                    { 3, 4.0, new Guid("00000000-0000-0000-0000-000000000000"), "Emergency", 105 },
+                    { 4, 0.0, new Guid("00000000-0000-0000-0000-000000000000"), "Unwanted", 1 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Items_SupplyTypeId",
@@ -187,13 +185,16 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                 name: "OrderItem");
 
             migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "Items");
 
             migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "SupplyType");
+                name: "SupplyTypes");
 
             migrationBuilder.DropTable(
                 name: "ItemTypes");

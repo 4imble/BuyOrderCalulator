@@ -20,10 +20,10 @@ namespace BuyOrderCalc.Web.Server.Controllers
         }
 
         [HttpGet]
-        public List<ItemModel> Get()
+        public List<ItemViewModel> Get()
         {
             var items = dataContext.Items
-                .Where(x => x.IsActive)
+                //.Where(x => x.IsActive)
                 .Include(x => x.Type)
                 .Include(x => x.SupplyType);
 

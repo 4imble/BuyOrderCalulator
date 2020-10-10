@@ -1,17 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route } from 'react-router-dom'
-import './index.css';
-import Order from './pages/order/Order';
-import ViewOrder from './pages/order/ViewOrder';
+import App from './App';
+import { BrowserRouter } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
+import './index.css';
 
 ReactDOM.render(
   //<React.StrictMode>
   <BrowserRouter>
-      <Route exact path="/" component={Order} />
-      <Route path="/order/:id" component={ViewOrder} />
-  </BrowserRouter>,
+    <App></App>
+  </BrowserRouter>
+  ,
   //</React.StrictMode>,
   document.getElementById('root')
 );

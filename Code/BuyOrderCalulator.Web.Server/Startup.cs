@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SimpleInjector;
 using BuyOrderCalc.EntityFramework;
-using BuyOrderCalc;
+using BuyOrderCalc.Web.Server.Helpers;
 
 namespace BuyOrderCalc.Web.Server
 {
@@ -40,8 +40,10 @@ namespace BuyOrderCalc.Web.Server
                 options.AddLogging();
             });
 
+            container.Register<AuthHelper>();
+
             services.AddDbContext<DataContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
                     .EnableSensitiveDataLogging());
 
             services.AddSpaStaticFiles(

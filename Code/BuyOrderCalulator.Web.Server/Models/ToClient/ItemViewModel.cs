@@ -1,6 +1,6 @@
 ﻿namespace BuyOrderCalc.Web.Server.Models.ToClient
 {
-    public class ItemModel
+    public class ItemViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -15,5 +15,7 @@
         public string SupplyTypeName { get; set; }
         public int PricePercentModifier { get; set; }
         public double CorpCreditPercent { get; set; }
+        public bool IsActive { get; internal set; }
+        public int MarketPrice { get; internal set; }
     }
 }

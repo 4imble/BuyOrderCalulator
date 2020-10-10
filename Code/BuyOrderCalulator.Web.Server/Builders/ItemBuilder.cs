@@ -7,21 +7,23 @@ namespace BuyOrderCalc.Web.Server.Builders
 {
     public static class ItemBuilder
     {
-        public static ItemModel BuildForView(this Item item)
+        public static ItemViewModel BuildForView(this Item item)
         {
-            return new ItemModel
+            return new ItemViewModel
             {
                 Id = item.Id,
                 Name = item.Name,
                 Quantity = item.Quantity,
                 ReorderLevel = item.ReorderLevel,
                 UnitPrice = Helper.GetPercentage(item.MarketPrice, item.SupplyType.PricePercentModifier),
+                MarketPrice = item.MarketPrice,
                 TypeId = item.TypeId,
                 TypeName = item.Type.Name,
                 SupplyTypeId = item.SupplyType.Id,
                 SupplyTypeName = item.SupplyType.Name,
                 PricePercentModifier = item.SupplyType.PricePercentModifier,
-                CorpCreditPercent = item.SupplyType.CorpCreditPercent
+                CorpCreditPercent = item.SupplyType.CorpCreditPercent,
+                IsActive = item.IsActive
             };
         }
     }
