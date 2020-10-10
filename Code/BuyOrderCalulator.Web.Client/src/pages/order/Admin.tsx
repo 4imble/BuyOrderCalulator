@@ -18,6 +18,9 @@ export default function Admin(props: any) {
     const [commonData, setCommonData] = useState<CommonData>();
 
     useEffect(() => {
+        if(props.user && !props.user.isAdmin)
+            history.push("/");
+            
         fetchItems();
         fetchCommon();
     }, []);
@@ -62,7 +65,7 @@ export default function Admin(props: any) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ ItemId: item.id })
+            body: JSON.stringify({ ItemId: item.id, DiscordId: props.user.discordId, AccessToken: props.user.accessToken })
         });
 
         let items = [...allItems];
@@ -80,7 +83,7 @@ export default function Admin(props: any) {
         // { title: 'Reorder Level', dataIndex: 'reorderLevel', key: 'reorderLevel', render: numberFormat },
         { title: 'Corp Credit', dataIndex: 'corpCreditPercent', key: 'corpCreditPercent', render: (value: number) => value + "%" },
         { title: 'Supply Level', dataIndex: 'supplyTypeName', key: 'supplyTypeName' },
-        { key: 'edit', render: (cell: null, item: Item) => <AdminEditItem item={item} commonData={commonData} fetchItems={fetchItems}  /> },
+        { key: 'edit', render: (cell: null, item: Item) => <AdminEditItem item={item} commonData={commonData} fetchItems={fetchItems} user={props.user} /> },
     ]
 
     function getSalePrice(saleItem: SaleItem) {
@@ -95,7 +98,7 @@ export default function Admin(props: any) {
             <Header className="header">
                 <Row>
                     <Col flex='auto' className="title">
-                        <img src={require('../../images/nilf_banner.png')} />
+                        <a href="/"> <img src={require('../../images/nilf_banner.png')} /></a>
                     </Col>
                     <Col>Repp's Buy Tool</Col>
                 </Row>

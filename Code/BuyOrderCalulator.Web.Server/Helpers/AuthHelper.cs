@@ -1,6 +1,7 @@
 ﻿using BuyOrderCalc.Domain;
 using BuyOrderCalc.EntityFramework;
 using BuyOrderCalc.Web.Server.Controllers;
+using BuyOrderCalc.Web.Server.Models.FromClient;
 using RestSharp;
 using System;
 using System.Linq;
@@ -57,7 +58,24 @@ namespace BuyOrderCalc.Web.Server.Helpers
 
             return user;
         }
+
+        public void EnsureAdmin(UserCredModel model)
+        {
+            if (!UserIsAdmin(model))
+                throw new Exception("You are not an admin");
+        }
+
+        public bool UserIsAdmin(UserCredModel model)
+        {
+            return GetUser(model).IsAdmin;
+        }
+
+        public User GetUser(UserCredModel model)
+        {
+            return dataContext.Users.Single(x => x.DiscordId == model.DiscordId && x.AccessToken == model.AccessToken);
+        }
     }
+
 
     public class UserResponse
     {

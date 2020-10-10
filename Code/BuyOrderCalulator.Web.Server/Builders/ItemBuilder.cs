@@ -7,9 +7,9 @@ namespace BuyOrderCalc.Web.Server.Builders
 {
     public static class ItemBuilder
     {
-        public static ItemModel BuildForView(this Item item)
+        public static ItemViewModel BuildForView(this Item item)
         {
-            return new ItemModel
+            return new ItemViewModel
             {
                 Id = item.Id,
                 Name = item.Name,

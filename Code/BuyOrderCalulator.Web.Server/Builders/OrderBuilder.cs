@@ -6,15 +6,17 @@ namespace BuyOrderCalc.Web.Server.Builders
 {
     public static class OrderBuilder
     {
-        public static OrderModel BuildForView(this Order order)
+        public static OrderViewModel BuildForView(this Order order)
         {
-            return new OrderModel
+            return new OrderViewModel
             {
                 Id = order.Id,
                 Guid = order.Guid,
                 OrderItems = order.OrderItems.Select(x => x.BuildForView()).ToList(),
                 DateCreated = order.DateCreated,
-                State = order.State
+                State = order.State,
+                UserNameDisplay = $"{order.User.Username}#{order.User.Discriminator}",
+                UserAvatarLink = order.User.AvatarLink
             };
         }
 

@@ -8,6 +8,8 @@ namespace BuyOrderCalc.Domain
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
         public OrderStatus State { get; set; }
         public DateTime DateCreated { get; set; }
+
+        public User User { get; set; }
     }
 
     public enum OrderStatus

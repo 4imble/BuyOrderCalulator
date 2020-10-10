@@ -47,17 +47,6 @@ export default function Order(props: any) {
         setSaleItems(items.filter(x => x.itemId != saleItem.itemId));
     }
 
-    // let itemLevelDropdown = (defaultval:any) => <Select defaultValue={defaultval} style={{ width: 120 }} onChange={handleChange}>
-    //     <Option value="jack">Jack</Option>
-    //     <Option value="lucy">Lucy</Option>
-    //     <Option value="disabled" disabled>            Disabled    </Option>
-    //     <Option value="Yiminghe">yiminghe</Option>
-    // </Select>
-
-    // function handleChange(value) {
-    //     console.log(`selected ${value}`);
-    // }
-
     const itemColumns = [
         { title: 'Name', dataIndex: 'name', key: 'name' },
         { title: 'Type', dataIndex: 'typeName', key: 'typeName' },
@@ -80,12 +69,12 @@ export default function Order(props: any) {
     }
 
     async function submitOrder() {
-        const result = await fetch("api/order", {
+        const result = await fetch("/api/order", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(saleItems)
+            body: JSON.stringify({ SaleItems: saleItems, DiscordId: props.user.discordId, AccessToken: props.user.accessToken })
         });
         result.text().then(res => alert(res))
             .catch(err => console.log(err));
@@ -115,7 +104,7 @@ export default function Order(props: any) {
             <Header className="header">
                 <Row>
                     <Col flex='auto' className="title">
-                        <img src={require('../../images/nilf_banner.png')} />
+                        <a href="/"> <img src={require('../../images/nilf_banner.png')} /></a>
                     </Col>
                     <Col>Repp's Buy Tool</Col>
                 </Row>

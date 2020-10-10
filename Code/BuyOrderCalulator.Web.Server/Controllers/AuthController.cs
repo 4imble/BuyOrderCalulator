@@ -1,6 +1,7 @@
 ﻿using BuyOrderCalc.Domain;
 using BuyOrderCalc.EntityFramework;
 using BuyOrderCalc.Web.Server.Helpers;
+using BuyOrderCalc.Web.Server.Models.FromClient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
@@ -41,7 +42,7 @@ namespace BuyOrderCalc.Web.Server.Controllers
 
         [HttpPost]
         [Route("GetUser")]
-        public User GetUser(UserCreds creds)
+        public User GetUser(UserCredModel creds)
         {
             return dataContext.Users.SingleOrDefault(x => 
                 x.DiscordId == creds.DiscordId && 
@@ -59,11 +60,5 @@ namespace BuyOrderCalc.Web.Server.Controllers
             public string scope { get; set; }
             public string token_type { get; set; }
         }
-    }
-
-    public class UserCreds
-    {
-        public string DiscordId { get; set; }
-        public string AccessToken { get; set; }
     }
 }

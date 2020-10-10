@@ -17,15 +17,17 @@ namespace BuyOrderCalc.Web.Server.Controllers
     public class OrderController : Controller
     {
         private readonly DataContext dataContext;
+        private readonly AuthHelper authHelper;
 
-        public OrderController(DataContext dataContext)
+        public OrderController(DataContext dataContext, AuthHelper authHelper)
         {
             this.dataContext = dataContext;
+            this.authHelper = authHelper;
         }
 
 
         [HttpGet]
-        public List<OrderModel> Get()
+        public List<OrderViewModel> Get()
         {
             var orders = dataContext.Orders
                 .Include(x => x.OrderItems)
@@ -37,30 +39,45 @@ namespace BuyOrderCalc.Web.Server.Controllers
 
 
         [HttpGet("{guid}")]
-        public OrderModel Get(Guid guid)
+        public OrderViewModel Get(Guid guid)
         {
             var order = dataContext.Orders
                 .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Item)
+                .Include(x => x.User)
                 .Single(x => x.Guid == guid);
 
             return order.BuildForView();
         }
 
         [HttpPost]
-        public string Post(List<SaleItem> saleItems)
+        public string Post(OrderModel model)
         {
+            var user = authHelper.GetUser(model);
+
             var newOrder = new Order()
             {
                 Guid = Guid.NewGuid(),
-                OrderItems = saleItems.Select(CreateOrderItem).ToList(),
+                OrderItems = model.SaleItems.Select(CreateOrderItem).ToList(),
                 State = OrderStatus.Open,
-                DateCreated = DateTime.UtcNow
+                DateCreated = DateTime.UtcNow,
+                User = user
             };
 
             dataContext.Orders.Add(newOrder);
 
             return newOrder.Guid.ToString();
+        }
+
+        [HttpPost]
+        [Route("ProcessOrder")]
+        public void ProcessOrder(ProcessOrderModel model)
+        {
+            authHelper.EnsureAdmin(model);
+            var order = dataContext.Orders.Single(x => x.Guid == model.OrderGuid);
+            order.State = model.State;
+
+            dataContext.SaveChanges();
         }
 
         private OrderItem CreateOrderItem(SaleItem saleItem)

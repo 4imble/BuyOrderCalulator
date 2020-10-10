@@ -26,7 +26,7 @@ export default function AdminEditItem(props: any) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ ItemId: item.id, ItemTypeId: item.typeId, SupplyTypeId: item.supplyTypeId })
+            body: JSON.stringify({ ItemId: item.id, ItemTypeId: item.typeId, SupplyTypeId: item.supplyTypeId, DiscordId: props.user.discordId, AccessToken: props.user.accessToken })
         });
 
         props.fetchItems();

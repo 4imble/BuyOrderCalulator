@@ -43,7 +43,7 @@ namespace BuyOrderCalc.Web.Server
             container.Register<AuthHelper>();
 
             services.AddDbContext<DataContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
                     .EnableSensitiveDataLogging());
 
             services.AddSpaStaticFiles(
