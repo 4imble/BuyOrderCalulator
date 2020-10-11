@@ -2,3 +2,4 @@
 obj/
 bin/
 *.db
+Code/BuyOrderCalulator.Web.Server/wwwroot

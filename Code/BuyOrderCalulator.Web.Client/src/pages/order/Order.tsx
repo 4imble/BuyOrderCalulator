@@ -5,6 +5,7 @@ import { Item, SaleItem } from '../../domain/domain';
 import NumberFormat from 'react-number-format';
 import SellModal from './SellModal'
 import { DeleteOutlined } from '@ant-design/icons';
+import uniqBy from 'lodash/uniqBy';
 import './Order.less'
 
 const { Header, Content } = Layout;
@@ -15,6 +16,7 @@ export default function Order(props: any) {
     const [allItems, setAllItems] = useState<Item[]>([]);
     const [saleItems, setSaleItems] = useState<SaleItem[]>([]);
     const [search, setSearch] = useState<string>("");
+    const [typeFilter, setTypeFilter] = useState<number>(0);
 
     useEffect(() => {
         fetchItems();
@@ -31,10 +33,10 @@ export default function Order(props: any) {
             .filter(item => item.isActive)
             .filter(item => !saleItems.some(s => s.itemId == item.id))
             .filter(item => item.name.toUpperCase().startsWith(search.toUpperCase()))
+            .filter(item => typeFilter == 0 || item.typeId == typeFilter)
     }
 
     const iskFormat = (value: number) => <NumberFormat value={value} displayType={'text'} thousandSeparator={true} prefix={'Ƶ '} />
-    const numberFormat = (value: number | string) => <NumberFormat value={value} displayType={'text'} thousandSeparator={true} />
 
     function addSaleItem(saleItem: SaleItem) {
         var items = [...saleItems];
@@ -98,6 +100,7 @@ export default function Order(props: any) {
         <Button block type="primary" onClick={submitOrder}>Submit Order</Button>
     </div> : <></>;
 
+    let activeTypes = uniqBy(allItems, x => x.typeId).filter(x => x.isActive);
 
     return (
         <Layout>
@@ -112,8 +115,12 @@ export default function Order(props: any) {
             <Content>
                 <Row gutter={16}>
                     <Col flex={2}>
-                        <div style={{ padding: '20px' }}>
+                        <div style={{ padding: '20px', display: 'flex' }}>
                             <Input placeholder="Filter by name" value={search} onChange={e => setSearch(e.target.value)} />
+                            <Select defaultValue={0} style={{ width: 120 }} onChange={e => setTypeFilter(e)}>
+                                <Option key={0} value={0}>All Types</Option>
+                                {activeTypes.map((item: Item) => <Option key={item.typeId} value={item.typeId}>{item.typeName}</Option>)}
+                            </Select>
                         </div>
                         {itemTable}
                     </Col>

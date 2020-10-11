@@ -58,6 +58,7 @@ export default function App(props: any) {
             <Route path="/order/:id" render={(props) => (<ViewOrder user={user} match={props.match}></ViewOrder>)} />
             <Route path="/login" render={(props) => (<Login user={user} setUser={setUser}></Login>)} />
             <Route path="/admin" render={(props) => (<Admin user={user}></Admin>)} />
+            <Route path="/orders" render={(props) => (<Admin user={user}></Admin>)} />
         </>
     )
 }

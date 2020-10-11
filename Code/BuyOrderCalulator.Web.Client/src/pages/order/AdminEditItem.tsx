@@ -37,16 +37,9 @@ export default function AdminEditItem(props: any) {
         setVisible(true);
     };
 
-    // const handleOk = (e: any) => {
-    //     props.addSaleItem({ itemId: props.item.id, quantity });
-    //     setVisible(false);
-    // };
-
     const handleCancel = (e: any) => {
         setVisible(false);
     };
-
-    const iskFormat = (value: number) => <NumberFormat value={value} displayType={'text'} thousandSeparator={true} prefix={'Ƶ '} />
 
     let title = `Editing ${props.item.name}`;
 
