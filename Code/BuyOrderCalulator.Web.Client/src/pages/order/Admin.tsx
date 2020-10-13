@@ -23,7 +23,7 @@ export default function Admin(props: any) {
             
         fetchItems();
         fetchCommon();
-    }, []);
+    }, [props.user]);
 
     async function fetchCommon() {
         const result = await fetch("/api/admin/commonData");
@@ -104,6 +104,8 @@ export default function Admin(props: any) {
                 </Row>
             </Header>
             <Content>
+                <a href="/orders">View All Orders</a>
+                
                 <Row gutter={16}>
                     <Col flex={2}>
                         <div style={{ padding: '20px' }}>

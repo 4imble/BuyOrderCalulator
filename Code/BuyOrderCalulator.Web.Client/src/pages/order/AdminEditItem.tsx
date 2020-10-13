@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Modal, Button, Input, Select } from 'antd';
-import NumberFormat from 'react-number-format';
 import './Modal.less'
 import { ItemType, Item, SupplyType } from '../../domain/domain';
 

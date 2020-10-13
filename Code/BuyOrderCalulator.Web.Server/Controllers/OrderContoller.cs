@@ -32,6 +32,7 @@ namespace BuyOrderCalc.Web.Server.Controllers
             var orders = dataContext.Orders
                 .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Item)
+                .Include(x => x.User)
                 .Where(x => x.State == OrderStatus.Open);
 
             return orders.Select(x => x.BuildForView()).ToList();

@@ -78,7 +78,10 @@ export default function Order(props: any) {
             },
             body: JSON.stringify({ SaleItems: saleItems, DiscordId: props.user.discordId, AccessToken: props.user.accessToken })
         });
-        result.text().then(res => alert(res))
+        result.text().then(res => {
+            alert("Order submitted, paste link into discord ticket after redirect. \n\n Redirecting to order now.");
+            history.push(`/order/${res}`)
+        })
             .catch(err => console.log(err));
     }
 
