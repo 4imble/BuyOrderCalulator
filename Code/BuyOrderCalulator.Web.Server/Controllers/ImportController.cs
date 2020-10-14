@@ -38,12 +38,13 @@ namespace BuyOrderCalc.Web.Server.Controllers
                     if (!record.sell.HasValue || !record.buy.HasValue)
                         continue;
 
-                    var item = allItems.SingleOrDefault(x => x.ApiId.ToString() == record.item_id) ?? new Item();
+                    var item = allItems.SingleOrDefault(x => x.ApiId == record.item_id) ?? new Item();
                     item.Name = record.name;
                     item.MarketPrice = (int)((record.sell + record.buy) / 2);
 
                     if (item.Id == 0)
                     {
+                        item.ApiId = record.item_id;
                         item.TypeId = 1; //unclassified
                         item.SupplyTypeId = 4; //unwanted
                         dataContext.Items.Add(item);

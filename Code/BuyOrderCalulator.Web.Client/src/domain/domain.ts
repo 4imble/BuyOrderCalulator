@@ -52,7 +52,7 @@ export class OrderItem {
     fixedCorpCreditPercent: number = 0;
     fixedUnitPrice: number = 0;
     itemName: string = "";
-    itemId: number = 0;
+    itemId: string = "";
 }
 
 export enum OrderStatus {
