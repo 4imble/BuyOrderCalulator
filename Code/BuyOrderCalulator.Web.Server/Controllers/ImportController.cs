@@ -19,6 +19,7 @@ namespace BuyOrderCalc.Web.Server.Controllers
     public class ImportController : ControllerBase
     {
         readonly DataContext dataContext;
+        List<RefinementSkill> refinementSkills;
 
         public ImportController(DataContext dataContext)
         {
@@ -49,18 +50,20 @@ namespace BuyOrderCalc.Web.Server.Controllers
                 var MegacytePrice = GetPrice(allItems.Single(x => x.Name == "Megacyte"));
                 var MorphitePrice = GetPrice(allItems.Single(x => x.Name == "Morphite"));
 
+                refinementSkills = dataContext.RefinementSkills.ToList();
+
                 foreach (var record in records)
                 {
                     var ore = allItems.Single(x => x.Name == record.ORETYPE);
                     ore.MarketPrice = 0;
-                    ore.MarketPrice += double.Parse(record.Tritanium) * TritaniumPrice / 50;
-                    ore.MarketPrice += double.Parse(record.Pyerite) * PyeritePrice / 50;
-                    ore.MarketPrice += double.Parse(record.Mexallon) * MexallonPrice / 50;
-                    ore.MarketPrice += double.Parse(record.Isogen) * IsogenPrice / 50;
-                    ore.MarketPrice += double.Parse(record.Nocxium) * NocxiumPrice / 50;
-                    ore.MarketPrice += double.Parse(record.Zydrine) * ZydrinePrice / 50;
-                    ore.MarketPrice += double.Parse(record.Megacyte) * MegacytePrice / 50;
-                    ore.MarketPrice += double.Parse(record.Morphite) * MorphitePrice / 50;
+                    ore.MarketPrice += GetYieldForOneOre(record.Tritanium, record.RARITY) * TritaniumPrice;
+                    ore.MarketPrice += GetYieldForOneOre(record.Pyerite, record.RARITY) * PyeritePrice;
+                    ore.MarketPrice += GetYieldForOneOre(record.Mexallon, record.RARITY) * MexallonPrice;
+                    ore.MarketPrice += GetYieldForOneOre(record.Isogen, record.RARITY) * IsogenPrice;
+                    ore.MarketPrice += GetYieldForOneOre(record.Nocxium, record.RARITY) * NocxiumPrice;
+                    ore.MarketPrice += GetYieldForOneOre(record.Zydrine, record.RARITY) * ZydrinePrice;
+                    ore.MarketPrice += GetYieldForOneOre(record.Megacyte, record.RARITY) * MegacytePrice;
+                    ore.MarketPrice += GetYieldForOneOre(record.Morphite, record.RARITY) * MorphitePrice;
 
                     var compressedOre = allItems.Single(x => x.Name == "Compressed " + record.ORETYPE);
                     compressedOre.MarketPrice = ore.MarketPrice * 10;
@@ -71,6 +74,14 @@ namespace BuyOrderCalc.Web.Server.Controllers
 
                 dataContext.SaveChanges();
             }
+        }
+
+        private double GetYieldForOneOre(string amount, string oreQuality)
+        {
+            var quality = (OreQuality)Enum.Parse(typeof(OreQuality), oreQuality);
+            var hundredPercentBasedOn30 = double.Parse(amount) * 100 / 30;
+            var skillEfficiency = refinementSkills.Single(x => x.Quality == quality).Efficiency;
+            return Helper.GetPercentage(hundredPercentBasedOn30, skillEfficiency) / 100;
         }
 
         private double GetPrice(Item item)

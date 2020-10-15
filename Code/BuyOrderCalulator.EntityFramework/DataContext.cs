@@ -50,6 +50,14 @@ namespace BuyOrderCalc.EntityFramework
                 new SupplyType { Id = 4, Name = "Unwanted", PricePercentModifier = 1, CorpCreditPercent = 0 },
                 new SupplyType { Id = 5, Name = "Misc Ore", PricePercentModifier = 95, CorpCreditPercent = 3 }
             );
+
+            builder.Entity<RefinementSkill>().HasData(
+                new RefinementSkill { Id = 1, Quality = OreQuality.Common, Efficiency = 60 },
+                new RefinementSkill { Id = 2, Quality = OreQuality.Uncommon, Efficiency = 60 },
+                new RefinementSkill { Id = 3, Quality = OreQuality.Special, Efficiency = 60 },
+                new RefinementSkill { Id = 4, Quality = OreQuality.Rare, Efficiency = 60 },
+                new RefinementSkill { Id = 5, Quality = OreQuality.Precious, Efficiency = 52.5 }
+            );
         }
 
         public DbSet<Item> Items { get; set; }
@@ -57,6 +65,7 @@ namespace BuyOrderCalc.EntityFramework
         public DbSet<SupplyType> SupplyTypes { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<RefinementSkill> RefinementSkills { get; set; }
 
     }
 }
