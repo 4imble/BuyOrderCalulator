@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int UnitPrice { get; set; }
+        public double UnitPrice { get; set; }
         public int Quantity { get; set; }
         public int ReorderLevel { get; set; }
 
@@ -16,6 +16,6 @@
         public int PricePercentModifier { get; set; }
         public double CorpCreditPercent { get; set; }
         public bool IsActive { get; internal set; }
-        public int MarketPrice { get; internal set; }
+        public double MarketPrice { get; internal set; }
     }
 }

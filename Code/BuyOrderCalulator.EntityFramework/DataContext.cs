@@ -47,7 +47,8 @@ namespace BuyOrderCalc.EntityFramework
                 new SupplyType { Id = 1, Name = "High", PricePercentModifier = 80, CorpCreditPercent = 2 },
                 new SupplyType { Id = 2, Name = "Low", PricePercentModifier = 90, CorpCreditPercent = 3 },
                 new SupplyType { Id = 3, Name = "Emergency", PricePercentModifier = 105, CorpCreditPercent = 4 },
-                new SupplyType { Id = 4, Name = "Unwanted", PricePercentModifier = 1, CorpCreditPercent = 0 }
+                new SupplyType { Id = 4, Name = "Unwanted", PricePercentModifier = 1, CorpCreditPercent = 0 },
+                new SupplyType { Id = 5, Name = "Misc Ore", PricePercentModifier = 95, CorpCreditPercent = 3 }
             );
         }
 

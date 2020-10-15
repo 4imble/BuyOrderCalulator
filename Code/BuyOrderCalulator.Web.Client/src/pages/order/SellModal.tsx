@@ -29,8 +29,8 @@ export default function SellModal(props: any) {
 
     return (
         <>
-            <Button type="primary" onClick={showModal}>
-                <ShoppingCartOutlined />
+            <Button type="link" onClick={showModal}>
+                Add
             </Button>
             <Modal className='modal' title={title} visible={visible} onOk={handleOk} onCancel={handleCancel}>
                 <Input type="number" placeholder="Amount to sell" value={quantity} onChange={e => setQuantity(e.target.value)} />

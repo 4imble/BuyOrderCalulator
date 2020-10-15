@@ -91,7 +91,7 @@ export default function Admin(props: any) {
         return item!.unitPrice * saleItem.quantity;
     }
 
-    let itemTable = <Table rowKey='id' pagination={{ hideOnSinglePage: true }} className="table" rowClassName={(item) => item.supplyTypeName} columns={itemColumns} dataSource={filteredItems()} />;
+    let itemTable = <Table rowKey='id' size="small" pagination={{ hideOnSinglePage: true }} className="table" rowClassName={(item) => item.supplyTypeName} columns={itemColumns} dataSource={filteredItems()} />;
 
     return (
         <Layout>

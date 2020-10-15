@@ -92,7 +92,7 @@ export default function Order(props: any) {
         { key: 'delete', render: (cell: null, item: SaleItem) => <DeleteOutlined onClick={() => removeSaleItem(item)} /> },
     ]
 
-    let itemTable = <Table rowKey='id' pagination={{ hideOnSinglePage: true }} className="table" rowClassName={(item) => item.supplyTypeName} columns={itemColumns} dataSource={filteredItems()} />;
+    let itemTable = <Table rowKey='id' size="small" pagination={{ hideOnSinglePage: true }} className="table" rowClassName={(item) => item.supplyTypeName} columns={itemColumns} dataSource={filteredItems()} />;
     let saleTable = <Table rowKey='itemId' pagination={{ hideOnSinglePage: true }} className="table" columns={saleColumns} dataSource={saleItems} locale={{ emptyText: "- Empty -" }} />;
     let totalSale = saleItems.length ? saleItems.map(x => getSalePrice(x)).reduce((total, item) => total + item) : 0;
     let totalCredit = saleItems.length ? saleItems.map(x => getCorpCredit(x)).reduce((total, item) => total + item) : 0;

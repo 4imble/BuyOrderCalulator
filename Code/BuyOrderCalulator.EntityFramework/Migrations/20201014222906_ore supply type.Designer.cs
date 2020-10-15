@@ -4,14 +4,16 @@ using BuyOrderCalc.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BuyOrderCalc.EntityFramework.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201014222906_ore supply type")]
+    partial class oresupplytype
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,8 +150,8 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                     b.Property<double>("FixedCorpCreditPercent")
                         .HasColumnType("float");
 
-                    b.Property<double>("FixedUnitPrice")
-                        .HasColumnType("float");
+                    b.Property<int>("FixedUnitPrice")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");

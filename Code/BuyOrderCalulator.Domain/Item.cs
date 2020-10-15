@@ -5,7 +5,7 @@ namespace BuyOrderCalc.Domain
     {
         public string ApiId { get; set; }
         public string Name { get; set; }
-        public int MarketPrice { get; set; }
+        public double MarketPrice { get; set; }
         public int Quantity { get; set; }
         public int ReorderLevel { get; set; }
         public bool IsActive { get; set; }

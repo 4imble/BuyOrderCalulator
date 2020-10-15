@@ -4,14 +4,16 @@ using BuyOrderCalc.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BuyOrderCalc.EntityFramework.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201014171957_changed some ints to doubles for more precision")]
+    partial class changedsomeintstodoublesformoreprecision
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,8 +150,8 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                     b.Property<double>("FixedCorpCreditPercent")
                         .HasColumnType("float");
 
-                    b.Property<double>("FixedUnitPrice")
-                        .HasColumnType("float");
+                    b.Property<int>("FixedUnitPrice")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
@@ -227,14 +229,6 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Unwanted",
                             PricePercentModifier = 1
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CorpCreditPercent = 3.0,
-                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Name = "Misc Ore",
-                            PricePercentModifier = 95
                         });
                 });
 
