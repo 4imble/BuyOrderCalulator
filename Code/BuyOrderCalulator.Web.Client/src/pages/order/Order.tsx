@@ -6,6 +6,7 @@ import NumberFormat from 'react-number-format';
 import SellModal from './SellModal'
 import { DeleteOutlined } from '@ant-design/icons';
 import uniqBy from 'lodash/uniqBy';
+import roundTo from 'round-to';
 import './Order.less'
 
 const { Header, Content } = Layout;
@@ -36,7 +37,7 @@ export default function Order(props: any) {
             .filter(item => typeFilter == 0 || item.typeId == typeFilter)
     }
 
-    const iskFormat = (value: number) => <NumberFormat value={value} displayType={'text'} thousandSeparator={true} prefix={'Ƶ '} />
+    const iskFormat = (value: number) => <NumberFormat value={roundTo(value, 2)} displayType={'text'} thousandSeparator={true} prefix={'Ƶ '} />
 
     function addSaleItem(saleItem: SaleItem) {
         var items = [...saleItems];
@@ -62,12 +63,14 @@ export default function Order(props: any) {
 
     function getSalePrice(saleItem: SaleItem) {
         let item = allItems.find(x => x.id == saleItem.itemId);
-        return item!.unitPrice * saleItem.quantity;
+        let value = item!.unitPrice * saleItem.quantity;
+        return roundTo.up(value, 0);
     }
 
     function getCorpCredit(saleItem: SaleItem) {
         let item = allItems.find(x => x.id == saleItem.itemId);
-        return Math.ceil((item!.corpCreditPercent / 100) * getSalePrice(saleItem));
+        let value = Math.ceil((item!.corpCreditPercent / 100) * getSalePrice(saleItem));
+        return roundTo.up(value, 0);
     }
 
     async function submitOrder() {
@@ -116,7 +119,7 @@ export default function Order(props: any) {
                 </Row>
             </Header>
             <Content>
-                <Row gutter={16}>
+                <Row>
                     <Col flex={2}>
                         <div style={{ padding: '20px', display: 'flex' }}>
                             <Input placeholder="Filter by name" value={search} onChange={e => setSearch(e.target.value)} />

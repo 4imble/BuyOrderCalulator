@@ -33,7 +33,7 @@ namespace BuyOrderCalc.Web.Server.Controllers
                 .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Item)
                 .Include(x => x.User)
-                .Where(x => x.State == OrderStatus.Open);
+                .OrderBy(x => x.State);
 
             return orders.Select(x => x.BuildForView()).ToList();
         }

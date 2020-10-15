@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Input } from 'antd';
-import { ShoppingCartOutlined } from '@ant-design/icons';
+import roundTo from 'round-to';
 import NumberFormat from 'react-number-format';
 import './Modal.less'
 
@@ -23,7 +23,7 @@ export default function SellModal(props: any) {
         setVisible(false);
     };
 
-    const iskFormat = (value: number) => <NumberFormat value={value} displayType={'text'} thousandSeparator={true} prefix={'Ƶ '} />
+    const iskFormat = (value: number) => <NumberFormat value={roundTo.up(value, 0)} displayType={'text'} thousandSeparator={true} prefix={'Ƶ '} />
 
     let title = `Selling ${props.item.name}`;
 

@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Row, Col, Tag, Layout, Table, Button } from 'antd';
 import { Order, OrderItem, OrderStatus } from '../../domain/domain';
 import NumberFormat from 'react-number-format';
+import roundTo from 'round-to';
 import './Order.less'
 
 const { Header, Content } = Layout;
@@ -22,11 +23,13 @@ export default function ViewOrder(props: any) {
     }
 
     function getTotalPrice(orderItem: OrderItem) {
-        return orderItem.fixedUnitPrice * orderItem.quantity;
+        let value = orderItem.fixedUnitPrice * orderItem.quantity;
+        return roundTo.up(value, 0);
     }
 
     function getCorpCredit(orderItem: OrderItem) {
-        return Math.ceil((orderItem.fixedCorpCreditPercent / 100) * getTotalPrice(orderItem));
+        let value =  Math.ceil((orderItem.fixedCorpCreditPercent / 100) * getTotalPrice(orderItem));
+        return roundTo.up(value, 0);
     }
 
     const iskFormat = (value: number) => <NumberFormat value={value} displayType={'text'} thousandSeparator={true} prefix={'Ƶ '} />
