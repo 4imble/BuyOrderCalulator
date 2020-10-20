@@ -13,11 +13,11 @@ export default function ViewOrder(props: any) {
     const [order, setOrder] = useState<Order>();
 
     useEffect(() => {
-        fetchOrder(props.match.params.id);
+        fetchOrder();
     }, []);
 
-    async function fetchOrder(orderGuid: string) {
-        const result = await fetch(`/api/order/${orderGuid}`);
+    async function fetchOrder() {
+        const result = await fetch(`/api/order/${props.match.params.id}`);
         result.json().then(res => setOrder(res))
             .catch(err => console.log(err));
     }
@@ -28,11 +28,11 @@ export default function ViewOrder(props: any) {
     }
 
     function getCorpCredit(orderItem: OrderItem) {
-        let value =  Math.ceil((orderItem.fixedCorpCreditPercent / 100) * getTotalPrice(orderItem));
+        let value = Math.ceil((orderItem.fixedCorpCreditPercent / 100) * getTotalPrice(orderItem));
         return roundTo.up(value, 0);
     }
 
-    const iskFormat = (value: number) => <NumberFormat value={value} displayType={'text'} thousandSeparator={true} prefix={'Ƶ '} />
+    const iskFormat = (value: number) => <NumberFormat value={roundTo(value, 2)} displayType={'text'} thousandSeparator={true} prefix={'Ƶ '} />
 
     async function submitOrder(state: OrderStatus) {
         await fetch("/api/order/processOrder", {
@@ -42,44 +42,53 @@ export default function ViewOrder(props: any) {
             },
             body: JSON.stringify({ OrderGuid: order!.guid, State: state, DiscordId: props.user.discordId, AccessToken: props.user.accessToken })
         });
-       
-        let orderClone: Order = {... order} as Order;
-        orderClone.state = state;
-        setOrder(orderClone);
+
+        await fetchOrder();
     }
 
-    function getStatusColor() {
-        let orderState = order ? order.state : 2;
-        switch (orderState) {
-            case 0: return "#e19f3c";
-            case 1: return "#87d068";
-            case 2: return "#fe3939";
-        }
-    }
-
-    const buttonsToShow = () => {
-        if(!props.user?.isAdmin)
+    const auditorButton = () => {
+        if (order?.isCancelled || !props.user?.isAuditor && !props.user?.isAdmin)
             return <></>;
 
-        if (order?.state == OrderStatus.Open)
-            return <><Button block type="primary" onClick={() => submitOrder(OrderStatus.Complete)}>Complete Order</Button>
-            <Button block type="default" onClick={() => submitOrder(OrderStatus.Cancelled)}>Cancel Order</Button></>
-        if (order?.state == OrderStatus.Complete)
-            return<><Button block type="default" onClick={() => submitOrder(OrderStatus.Open)}>Open Order</Button>
-            <Button block type="default" onClick={() => submitOrder(OrderStatus.Cancelled)}>Cancel Order</Button></>
-        if (order?.state == OrderStatus.Cancelled)
-            return <><Button block type="default" onClick={() => submitOrder(OrderStatus.Complete)}>Complete Order</Button>
-            <Button block type="default" onClick={() => submitOrder(OrderStatus.Open)}>Open Order</Button></>
-        return <></>
-    }
+        let text = order?.dateCredited ? "Set Not Credited" : "Set Credited";
+
+        return <Button block type="default" onClick={() => submitOrder(OrderStatus.Credited)}>{text}</Button>
+    };
+
+    const acceptButton = () => {
+        if (order?.isCancelled || !props.user?.isAdmin)
+            return <></>;
+
+        let text = order?.dateAccepted ? "Unset Accepted" : "Set Accepted";
+
+        return <Button block type="primary" onClick={() => submitOrder(OrderStatus.Accepted)}>{text}</Button>
+    };
+
+    const cancelButton = () => {
+        if (!props.user?.isAdmin)
+            return <></>;
+
+        let text = order?.isCancelled ? "Undo Cancel" : "Cancel Order";
+
+        return <Button block type="primary" danger onClick={() => submitOrder(OrderStatus.Cancelled)}>{text}</Button>
+    };
+
+    let tags = order?.isCancelled ? <Tag color="red">Cancelled</Tag> :
+        <>
+            {order?.dateCreated ? <Tag>Created: {order!.dateCreated}</Tag> : <></>}
+            {order?.dateCredited ? <Tag color="blue">Credited: {order!.dateCredited}</Tag> : <></>}
+            {order?.dateAccepted ? <Tag color="green">Accepted: {order!.dateAccepted}</Tag> : <></>}
+        </>
 
     let totalSale = order ? order!.orderItems.map(x => getTotalPrice(x)).reduce((total, item) => total + item) : 0;
     let totalCredit = order ? order!.orderItems.map(x => getCorpCredit(x)).reduce((total, item) => total + item) : 0;
     let summary = <div className="summary">
-        <Tag color={getStatusColor()}>Status: {OrderStatus[order ? order!.state : 2]}</Tag>
+        {tags}
         <div className="total">Total sale: {iskFormat(totalSale)}</div>
         <div className="total">Corp credit: {iskFormat(totalCredit)}</div>
-        {buttonsToShow()}
+        {auditorButton()}
+        {acceptButton()}
+        {cancelButton()}
     </div>;
 
     const orderItemColumns = [
@@ -104,7 +113,7 @@ export default function ViewOrder(props: any) {
                 </Row>
             </Header>
             <Content>
-                <Row gutter={16}>
+                <Row>
                     <Col flex={2}>
                         {itemTable}
                     </Col>

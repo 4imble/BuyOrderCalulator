@@ -41,6 +41,7 @@ export default function Orders(props: any) {
     const itemColumns = [
         { title: 'Avatar', dataIndex: 'userAvatarLink', key: 'userAvatarLink', render: (value: string) => <img className="userimg" src={value} /> },
         { title: 'Name', dataIndex: 'userNameDisplay', key: 'userNameDisplay' },
+        { title: 'Submitted', dataIndex: 'dateCreated', key: 'dateCreated' },
         { title: 'Total', key: 'total', render: (cell: null, order: Order) => iskFormat(getTotalPrice(order)) },
         { title: 'State', dataIndex: 'state', key: 'state', render: (value: OrderStatus) => OrderStatus[value] },
         { dataIndex: 'guid', key: 'guid', render: (value: string) => <Button type="link" onClick={() => redirectToOrder(value)}>View</Button> },

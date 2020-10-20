@@ -11,6 +11,7 @@ namespace BuyOrderCalc.Domain
         public string Avatar { get; set; }
         public string Discriminator { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsAuditor { get; set; }
         public string AccessToken { get; set; }
 
         public string AvatarLink => $"https://cdn.discordapp.com/avatars/{DiscordId}/{Avatar}.jpg";

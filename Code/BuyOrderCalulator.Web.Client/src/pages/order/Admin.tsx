@@ -88,7 +88,7 @@ export default function Admin(props: any) {
             <Content>
                 <a href="/orders">View All Orders</a>
 
-                <Row gutter={16}>
+                <Row>
                     <Col flex={2}>
                         <div style={{ padding: '20px' }}>
                             <Input placeholder="Filter by name" value={search} onChange={e => setSearch(e.target.value)} />

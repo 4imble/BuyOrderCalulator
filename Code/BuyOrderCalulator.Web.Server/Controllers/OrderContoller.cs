@@ -33,7 +33,7 @@ namespace BuyOrderCalc.Web.Server.Controllers
                 .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Item)
                 .Include(x => x.User)
-                .OrderBy(x => x.State);
+                .OrderBy(x => x.DateCreated);
 
             return orders.Select(x => x.BuildForView()).ToList();
         }
@@ -60,7 +60,6 @@ namespace BuyOrderCalc.Web.Server.Controllers
             {
                 Guid = Guid.NewGuid(),
                 OrderItems = model.SaleItems.Select(CreateOrderItem).ToList(),
-                State = OrderStatus.Open,
                 DateCreated = DateTime.UtcNow,
                 User = user
             };
@@ -74,9 +73,27 @@ namespace BuyOrderCalc.Web.Server.Controllers
         [Route("ProcessOrder")]
         public void ProcessOrder(ProcessOrderModel model)
         {
-            authHelper.EnsureAdmin(model);
+            if (model.State == OrderStatus.Credited)
+                authHelper.EnsureAuditor(model);
+            else
+                authHelper.EnsureAdmin(model);
+
             var order = dataContext.Orders.Single(x => x.Guid == model.OrderGuid);
-            order.State = model.State;
+
+            switch (model.State)
+            {
+                case OrderStatus.Credited:
+                    order.DateCredited = order.DateCredited == null 
+                        ? DateTime.Now : (DateTime?)null;
+                    break;
+                case OrderStatus.Accepted:
+                    order.DateAccepted = order.DateAccepted == null
+                        ? DateTime.Now : (DateTime?)null;
+                    break;
+                case OrderStatus.Cancelled:
+                    order.IsCancelled = !order.IsCancelled;
+                    break;
+            }
 
             dataContext.SaveChanges();
         }

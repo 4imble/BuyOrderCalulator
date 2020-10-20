@@ -32,7 +32,7 @@ namespace BuyOrderCalc.Web.Server.Controllers
 #if DEBUG
             var redirect = "http://localhost:5000/login";
 #else
-            var redirect = "http://reppbuytool.azurewebsites.net/login";
+            var redirect = "https://reppbuytool.azurewebsites.net/login";
 #endif
             var endpoint = $"grant_type=authorization_code&client_id={clientId}&client_secret={secret}&code={code}&redirect_uri={redirect}";
             var client = new RestClient("https://discord.com/api/oauth2/token");

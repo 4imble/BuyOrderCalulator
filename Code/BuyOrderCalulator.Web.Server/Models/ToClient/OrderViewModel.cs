@@ -8,8 +8,11 @@ namespace BuyOrderCalc.Web.Server.Models.ToClient
     {
         public int Id { get; set; }
         public Guid Guid { get; set; }
-        public OrderStatus State { get; set; }
-        public DateTime DateCreated { get; set; }
+        public string DateCreated { get; set; }
+        public string DateCredited { get; set; }
+        public string DateAccepted { get; set; }
+        public bool IsCancelled { get; internal set; }
+
 
         public List<OrderItemModel> OrderItems { get; set; } = new List<OrderItemModel>();
         public string UserNameDisplay { get; internal set; }

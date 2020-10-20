@@ -13,8 +13,10 @@ namespace BuyOrderCalc.Web.Server.Builders
                 Id = order.Id,
                 Guid = order.Guid,
                 OrderItems = order.OrderItems.Select(x => x.BuildForView()).ToList(),
-                DateCreated = order.DateCreated,
-                State = order.State,
+                DateCreated = order.DateCreated.ToString("dd, MMM yyyy"),
+                DateAccepted = order.DateAccepted.HasValue ? order.DateAccepted.Value.ToString("dd, MMM yyyy") : "",
+                DateCredited = order.DateCredited.HasValue ? order.DateCredited.Value.ToString("dd, MMM yyyy") : "",
+                IsCancelled = order.IsCancelled,
                 UserNameDisplay = $"{order.User.Username}#{order.User.Discriminator}",
                 UserAvatarLink = order.User.AvatarLink
             };

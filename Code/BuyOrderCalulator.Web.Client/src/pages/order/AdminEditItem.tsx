@@ -49,10 +49,10 @@ export default function AdminEditItem(props: any) {
             </Button>
             <Modal className='modal' footer={null} title={title} visible={visible} onCancel={handleCancel}>
                 <div className="editItem">
-                    <Select defaultValue={props.item.typeId} style={{ width: 120 }} onChange={handleTypeChange}>
+                    <Select defaultValue={props.item.typeId} style={{ minWidth: 120 }} onChange={handleTypeChange}>
                         {props.commonData.itemTypes.map((itemType: ItemType) => <Option key={itemType.id} value={itemType.id}>{itemType.name}</Option>)}
                     </Select>
-                    <Select defaultValue={props.item.supplyTypeId} style={{ width: 120 }} onChange={handleSupplyChange}>
+                    <Select defaultValue={props.item.supplyTypeId} style={{ minWidth: 120 }} onChange={handleSupplyChange}>
                         {props.commonData.supplyTypes.map((supplyType: SupplyType) => <Option key={supplyType.id} value={supplyType.id}>{supplyType.name}</Option>)}
                     </Select>
                 </div>

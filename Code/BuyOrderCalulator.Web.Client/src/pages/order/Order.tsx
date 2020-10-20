@@ -24,6 +24,7 @@ export default function Order(props: any) {
     }, []);
 
     async function fetchItems() {
+        await fetch("/api/import");
         const result = await fetch("/api/items");
         result.json().then(res => setAllItems(res))
             .catch(err => console.log(err));

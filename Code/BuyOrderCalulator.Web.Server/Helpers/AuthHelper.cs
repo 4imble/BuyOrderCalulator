@@ -61,14 +61,16 @@ namespace BuyOrderCalc.Web.Server.Helpers
 
         public void EnsureAdmin(UserCredModel model)
         {
-            if (!UserIsAdmin(model))
+            if (!GetUser(model).IsAdmin)
                 throw new Exception("You are not an admin");
         }
 
-        public bool UserIsAdmin(UserCredModel model)
+        public void EnsureAuditor(UserCredModel model)
         {
-            return GetUser(model).IsAdmin;
+            if (!GetUser(model).IsAuditor && !GetUser(model).IsAdmin)
+                throw new Exception("You are not an auditor");
         }
+
 
         public User GetUser(UserCredModel model)
         {
