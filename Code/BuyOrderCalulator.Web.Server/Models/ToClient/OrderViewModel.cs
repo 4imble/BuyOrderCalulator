@@ -8,8 +8,11 @@ namespace BuyOrderCalc.Web.Server.Models.ToClient
     {
         public int Id { get; set; }
         public Guid Guid { get; set; }
-        public OrderStatus State { get; set; }
-        public DateTime DateCreated { get; set; }
+        public string DateCreated { get; set; }
+        public string DateCredited { get; set; }
+        public string DateAccepted { get; set; }
+        public bool IsCancelled { get; internal set; }
+
 
         public List<OrderItemModel> OrderItems { get; set; } = new List<OrderItemModel>();
         public string UserNameDisplay { get; internal set; }
@@ -19,7 +22,7 @@ namespace BuyOrderCalc.Web.Server.Models.ToClient
     public class OrderItemModel
     {
         public int Quantity { get; set; }
-        public int FixedUnitPrice { get; set; }
+        public double FixedUnitPrice { get; set; }
         public double FixedCorpCreditPercent { get; set; }
 
         public int ItemId { get; set; }

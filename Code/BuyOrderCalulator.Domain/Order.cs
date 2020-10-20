@@ -6,16 +6,18 @@ namespace BuyOrderCalc.Domain
     public class Order: Entity
     {
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
-        public OrderStatus State { get; set; }
         public DateTime DateCreated { get; set; }
+        public DateTime? DateAccepted { get; set; }
+        public DateTime? DateCredited { get; set; }
+        public bool IsCancelled { get; set; }
 
         public User User { get; set; }
     }
 
     public enum OrderStatus
     {
-        Open,
-        Complete,
+        Credited,
+        Accepted,
         Cancelled
     }
 }

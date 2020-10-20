@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Row, Col,Layout, Table, Button } from 'antd';
-import { Order } from '../../domain/domain';
+import { Order, OrderStatus } from '../../domain/domain';
 import NumberFormat from 'react-number-format';
+import roundTo from 'round-to';
 
 import './Orders.less'
 
@@ -28,7 +29,8 @@ export default function Orders(props: any) {
     const iskFormat = (value: number) => <NumberFormat value={value} displayType={'text'} thousandSeparator={true} prefix={'Ƶ '} />
 
     function getTotalPrice(order: Order) {
-        return order.orderItems.map(x => x.fixedUnitPrice * x.quantity).reduce((total, item) => total + item)
+        let value = order.orderItems.map(x => roundTo.up(x.fixedUnitPrice * x.quantity, 0)).reduce((total, item) => total + item);
+        return roundTo.up(value, 0);
     }
 
     function redirectToOrder(guid: string)
@@ -39,7 +41,9 @@ export default function Orders(props: any) {
     const itemColumns = [
         { title: 'Avatar', dataIndex: 'userAvatarLink', key: 'userAvatarLink', render: (value: string) => <img className="userimg" src={value} /> },
         { title: 'Name', dataIndex: 'userNameDisplay', key: 'userNameDisplay' },
+        { title: 'Submitted', dataIndex: 'dateCreated', key: 'dateCreated' },
         { title: 'Total', key: 'total', render: (cell: null, order: Order) => iskFormat(getTotalPrice(order)) },
+        { title: 'State', dataIndex: 'state', key: 'state', render: (value: OrderStatus) => OrderStatus[value] },
         { dataIndex: 'guid', key: 'guid', render: (value: string) => <Button type="link" onClick={() => redirectToOrder(value)}>View</Button> },
     ]
 

@@ -24,4 +24,10 @@
     <ProjectReference Include="..\BuyOrderCalulator\BuyOrderCalc.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="orevalues.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -50,7 +50,7 @@ export default function App(props: any) {
     }
 
     async function triggerAuthAndSetCode() {
-        window.location.replace('https://discord.com/api/oauth2/authorize?response_type=code&client_id=760234712446402560&redirect_uri=http://reppbuytool.azurewebsites.net/login&scope=identify&audience=reppbuytool&state=gimble');
+        window.location.replace(`https://discord.com/api/oauth2/authorize?response_type=code&client_id=760234712446402560&redirect_uri=${window.location.origin}/login&scope=identify&audience=reppbuytool&state=gimble`);
     }
 
     return (

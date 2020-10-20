@@ -4,14 +4,16 @@ using BuyOrderCalc.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BuyOrderCalc.EntityFramework.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201014171957_changed some ints to doubles for more precision")]
+    partial class changedsomeintstodoublesformoreprecision
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,20 +121,14 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("DateAccepted")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateCredited")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsCancelled")
-                        .HasColumnType("bit");
+                    b.Property<int>("State")
+                        .HasColumnType("int");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
@@ -154,8 +150,8 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                     b.Property<double>("FixedCorpCreditPercent")
                         .HasColumnType("float");
 
-                    b.Property<double>("FixedUnitPrice")
-                        .HasColumnType("float");
+                    b.Property<int>("FixedUnitPrice")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
@@ -176,64 +172,6 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItem");
-                });
-
-            modelBuilder.Entity("BuyOrderCalc.Domain.RefinementSkill", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<double>("Efficiency")
-                        .HasColumnType("float");
-
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Quality")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RefinementSkills");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Efficiency = 60.0,
-                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Quality = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Efficiency = 60.0,
-                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Quality = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Efficiency = 60.0,
-                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Quality = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Efficiency = 60.0,
-                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Quality = 3
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Efficiency = 52.5,
-                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Quality = 4
-                        });
                 });
 
             modelBuilder.Entity("BuyOrderCalc.Domain.SupplyType", b =>
@@ -291,14 +229,6 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                             Guid = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Unwanted",
                             PricePercentModifier = 1
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CorpCreditPercent = 3.0,
-                            Guid = new Guid("00000000-0000-0000-0000-000000000000"),
-                            Name = "Misc Ore",
-                            PricePercentModifier = 95
                         });
                 });
 
@@ -325,9 +255,6 @@ namespace BuyOrderCalc.EntityFramework.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsAuditor")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("TokenExpires")

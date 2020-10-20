@@ -42,7 +42,9 @@ export class Order {
     guid: string = "";
     orderItems: Array<OrderItem> = [];
     dateCreated: string = "";
-    state: OrderStatus = OrderStatus.Open;
+    dateAccepted: string = "";
+    dateCredited: string = "";
+    isCancelled: string = "";
     userNameDisplay: string = "";
     userAvatarLink: string = "";
 }
@@ -52,12 +54,12 @@ export class OrderItem {
     fixedCorpCreditPercent: number = 0;
     fixedUnitPrice: number = 0;
     itemName: string = "";
-    itemId: number = 0;
+    itemId: string = "";
 }
 
 export enum OrderStatus {
-    Open,
-    Complete,
+    Credited,
+    Accepted,
     Cancelled
 }
 

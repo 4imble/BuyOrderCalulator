@@ -29,7 +29,11 @@ namespace BuyOrderCalc.Web.Server.Controllers
         {
             var clientId = "760234712446402560";
             var secret = "MBuAhtzBgI4fIos0wqatQreSm68j9TPy";
-            var redirect = "http://reppbuytool.azurewebsites.net/login";
+#if DEBUG
+            var redirect = "http://localhost:5000/login";
+#else
+            var redirect = "https://reppbuytool.azurewebsites.net/login";
+#endif
             var endpoint = $"grant_type=authorization_code&client_id={clientId}&client_secret={secret}&code={code}&redirect_uri={redirect}";
             var client = new RestClient("https://discord.com/api/oauth2/token");
             var request = new RestRequest(Method.POST);
